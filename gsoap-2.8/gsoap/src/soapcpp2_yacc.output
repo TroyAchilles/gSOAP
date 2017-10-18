@@ -1,0 +1,7951 @@
+   0  $accept : prog $end
+
+   1  prog : s1 exts
+
+   2  s1 :
+
+   3  exts : NAMESPACE ID '{' exts1 '}'
+   4       | exts1
+
+   5  exts1 :
+   6        | exts1 ext
+
+   7  ext : dclrs ';'
+   8      | pragma
+   9      | t1
+  10      | t2
+  11      | error ';'
+
+  12  pragma : PRAGMA
+
+  13  decls :
+  14        | dclrs ';' decls
+  15        | PRIVATE ':' t3 decls
+  16        | PROTECTED ':' t4 decls
+  17        | PUBLIC ':' t5 decls
+  18        | t1 decls t2 decls
+  19        | error ';'
+
+  20  t1 : '['
+
+  21  t2 : ']'
+
+  22  t3 :
+
+  23  t4 :
+
+  24  t5 :
+
+  25  dclrs : spec
+  26        | spec dclr
+  27        | spec fdclr func
+  28        | ctor func
+  29        | dtor func
+  30        | dclrs ',' dclr
+  31        | dclrs ',' fdclr func
+  32        | error ID
+  33        | error ')'
+
+  34  dclr : ptrs ID arrayck tag bounds brinit
+
+  35  fdclr : ptrs name
+
+  36  id : ID
+  37     | TYPE
+
+  38  name : ID
+  39       | OPERATOR '!'
+  40       | OPERATOR '~'
+  41       | OPERATOR '='
+  42       | OPERATOR PA
+  43       | OPERATOR NA
+  44       | OPERATOR TA
+  45       | OPERATOR DA
+  46       | OPERATOR MA
+  47       | OPERATOR AA
+  48       | OPERATOR XA
+  49       | OPERATOR OA
+  50       | OPERATOR LA
+  51       | OPERATOR RA
+  52       | OPERATOR OR
+  53       | OPERATOR AN
+  54       | OPERATOR '|'
+  55       | OPERATOR '^'
+  56       | OPERATOR '&'
+  57       | OPERATOR EQ
+  58       | OPERATOR NE
+  59       | OPERATOR '<'
+  60       | OPERATOR LE
+  61       | OPERATOR '>'
+  62       | OPERATOR GE
+  63       | OPERATOR LS
+  64       | OPERATOR RS
+  65       | OPERATOR '+'
+  66       | OPERATOR '-'
+  67       | OPERATOR '*'
+  68       | OPERATOR '/'
+  69       | OPERATOR '%'
+  70       | OPERATOR PP
+  71       | OPERATOR NN
+  72       | OPERATOR AR
+  73       | OPERATOR '[' ']'
+  74       | OPERATOR '(' ')'
+  75       | OPERATOR texp
+
+  76  ctor : TYPE
+
+  77  dtor : virtual '~' TYPE
+
+  78  func : fname '(' s6 fargso ')' const abstract
+
+  79  fname :
+
+  80  fargso :
+  81         | fargs
+
+  82  fargs : farg
+  83        | farg ',' fargs
+  84        | error ID
+  85        | error ','
+
+  86  farg : tspec ptrs arg arrayck occurs init
+
+  87  arg :
+  88      | ID
+
+  89  texpf : texp
+  90        | tspec ptrs '(' s6 fargso ')'
+
+  91  texp : tspec ptrs array
+  92       | tspec ptrs ID array
+
+  93  spec :
+  94       | store spec
+  95       | type spec
+
+  96  tspec : store
+  97        | type
+  98        | store tspec
+  99        | type tspec
+
+ 100  type : VOID
+ 101       | BOOL
+ 102       | CHAR
+ 103       | WCHAR
+ 104       | SHORT
+ 105       | INT
+ 106       | LONG
+ 107       | LLONG
+ 108       | ULLONG
+ 109       | SIZE
+ 110       | FLOAT
+ 111       | DOUBLE
+ 112       | SIGNED
+ 113       | UNSIGNED
+ 114       | UCHAR
+ 115       | USHORT
+ 116       | UINT
+ 117       | ULONG
+ 118       | TIME
+ 119       | TEMPLATE '<' tname id '>' CLASS id
+ 120       | CLASS '{' s2 decls '}'
+ 121       | class '{' s2 decls '}'
+ 122       | class ':' base '{' s2 decls '}'
+ 123       | class
+ 124       | class ':' base
+ 125       | STRUCT '{' s2 decls '}'
+ 126       | struct '{' s2 decls '}'
+ 127       | STRUCT id
+ 128       | UNION '{' s3 decls '}'
+ 129       | UNION id '{' s3 decls '}'
+ 130       | UNION id
+ 131       | ENUM '{' s2 dclrs s5 '}'
+ 132       | ENUM '*' '{' s2 dclrs s5 '}'
+ 133       | enum '{' s2 dclrs s5 '}'
+ 134       | enumsc '{' s2 dclrs s5 '}'
+ 135       | mask '{' s4 dclrs s5 '}'
+ 136       | masksc '{' s4 dclrs s5 '}'
+ 137       | ENUM id
+ 138       | ENUM sc
+ 139       | TYPE
+ 140       | TYPE '<' texpf '>'
+ 141       | error ID error
+ 142       | error ID '>'
+ 143       | error '>'
+ 144       | CLASS error '}'
+ 145       | STRUCT error '}'
+ 146       | UNION error '}'
+ 147       | ENUM error '}'
+
+ 148  struct : STRUCT id
+
+ 149  class : CLASS id
+
+ 150  enum : ENUM id utype
+
+ 151  enumsc : ENUM sc utype
+
+ 152  mask : ENUM '*' id utype
+
+ 153  masksc : ENUM '*' sc utype
+
+ 154  sc : STRUCT id
+ 155     | CLASS id
+
+ 156  utype : ':' CHAR
+ 157        | ':' WCHAR
+ 158        | ':' SHORT
+ 159        | ':' INT
+ 160        | ':' LONG
+ 161        | ':' LLONG
+ 162        | ':' TYPE
+ 163        | ':'
+ 164        |
+
+ 165  tname : CLASS
+ 166        | TYPENAME
+
+ 167  base : PROTECTED base
+ 168       | PRIVATE base
+ 169       | PUBLIC base
+ 170       | TYPE
+ 171       | STRUCT ID
+
+ 172  s2 :
+
+ 173  s3 :
+
+ 174  s4 :
+
+ 175  s5 :
+ 176     | ','
+
+ 177  s6 :
+
+ 178  store : AUTO
+ 179        | REGISTER
+ 180        | STATIC
+ 181        | EXPLICIT
+ 182        | EXTERN
+ 183        | TYPEDEF
+ 184        | VIRTUAL
+ 185        | CONST
+ 186        | FINAL
+ 187        | OVERRIDE
+ 188        | FRIEND
+ 189        | INLINE
+ 190        | MUSTUNDERSTAND
+ 191        | RETURN
+ 192        | '@'
+ 193        | '$'
+ 194        | VOLATILE
+ 195        | MUTABLE
+
+ 196  const :
+ 197        | const CONST
+ 198        | const FINAL
+ 199        | const OVERRIDE
+
+ 200  abstract :
+ 201           | '=' LNG
+
+ 202  virtual :
+ 203          | VIRTUAL
+
+ 204  ptrs :
+ 205       | ptrs '*'
+ 206       | ptrs '&'
+ 207       | ptrs AN
+
+ 208  array :
+ 209        | '[' cexp ']' array
+ 210        | '[' ']' array
+
+ 211  arrayck : array
+
+ 212  brinit : init
+ 213         | '{' cexp '}'
+
+ 214  init :
+ 215       | '=' cexp
+ 216       | EQ cexp
+
+ 217  tag :
+ 218      | TAG
+
+ 219  occurs :
+ 220         | LNG
+ 221         | LNG ':'
+ 222         | LNG ':' LNG
+ 223         | ':' LNG
+
+ 224  bounds : nullptr patt
+ 225         | nullptr patt cdbl min
+ 226         | nullptr patt cdbl minmax cdbl
+ 227         | nullptr patt max cdbl
+
+ 228  nullptr :
+ 229          | null
+
+ 230  patt :
+ 231       | STR
+
+ 232  cdbl : DBL
+ 233       | LNG
+ 234       | CHR
+ 235       | '+' cdbl
+ 236       | '-' cdbl
+
+ 237  min :
+ 238      | ':'
+ 239      | '<' ':'
+ 240      | '<'
+
+ 241  minmax : ':'
+ 242         | '<' ':'
+ 243         | ':' '<'
+ 244         | '<' ':' '<'
+ 245         | '<'
+
+ 246  max : ':'
+ 247      | ':' '<'
+ 248      | '<'
+
+ 249  expr : expr ',' expr
+ 250       | cexp
+
+ 251  cexp : obex '?' qexp ':' cexp
+ 252       | oexp
+
+ 253  qexp : expr
+
+ 254  oexp : obex OR aexp
+ 255       | aexp
+
+ 256  obex : oexp
+
+ 257  aexp : abex AN rexp
+ 258       | rexp
+
+ 259  abex : aexp
+
+ 260  rexp : rexp '|' rexp
+ 261       | rexp '^' rexp
+ 262       | rexp '&' rexp
+ 263       | rexp EQ rexp
+ 264       | rexp NE rexp
+ 265       | rexp '<' rexp
+ 266       | rexp LE rexp
+ 267       | rexp '>' rexp
+ 268       | rexp GE rexp
+ 269       | rexp LS rexp
+ 270       | rexp RS rexp
+ 271       | rexp '+' rexp
+ 272       | rexp '-' rexp
+ 273       | rexp '*' rexp
+ 274       | rexp '/' rexp
+ 275       | rexp '%' rexp
+ 276       | lexp
+
+ 277  lexp : '!' lexp
+ 278       | '~' lexp
+ 279       | '-' lexp
+ 280       | '+' lexp
+ 281       | '*' lexp
+ 282       | '&' lexp
+ 283       | SIZEOF '(' texp ')'
+ 284       | pexp
+
+ 285  pexp : '(' expr ')'
+ 286       | ID
+ 287       | LNG
+ 288       | DBL
+ 289       | CHR
+ 290       | STR
+ 291       | CFALSE
+ 292       | CTRUE
+
+state 0
+	$accept : . prog $end  (0)
+	s1 : .  (2)
+
+	.  reduce 2
+
+	prog  goto 1
+	s1  goto 2
+
+
+state 1
+	$accept : prog . $end  (0)
+
+	$end  accept
+
+
+state 2
+	prog : s1 . exts  (1)
+	exts1 : .  (5)
+
+	NAMESPACE  shift 3
+	$end  reduce 5
+	error  reduce 5
+	PRAGMA  reduce 5
+	AUTO  reduce 5
+	DOUBLE  reduce 5
+	INT  reduce 5
+	STRUCT  reduce 5
+	LONG  reduce 5
+	ENUM  reduce 5
+	REGISTER  reduce 5
+	TYPEDEF  reduce 5
+	CHAR  reduce 5
+	EXTERN  reduce 5
+	RETURN  reduce 5
+	UNION  reduce 5
+	CONST  reduce 5
+	FLOAT  reduce 5
+	SHORT  reduce 5
+	UNSIGNED  reduce 5
+	SIGNED  reduce 5
+	VOID  reduce 5
+	VOLATILE  reduce 5
+	STATIC  reduce 5
+	CLASS  reduce 5
+	VIRTUAL  reduce 5
+	INLINE  reduce 5
+	OPERATOR  reduce 5
+	LLONG  reduce 5
+	BOOL  reduce 5
+	WCHAR  reduce 5
+	TIME  reduce 5
+	ULLONG  reduce 5
+	MUSTUNDERSTAND  reduce 5
+	SIZE  reduce 5
+	FRIEND  reduce 5
+	TEMPLATE  reduce 5
+	EXPLICIT  reduce 5
+	MUTABLE  reduce 5
+	FINAL  reduce 5
+	OVERRIDE  reduce 5
+	UCHAR  reduce 5
+	USHORT  reduce 5
+	UINT  reduce 5
+	ULONG  reduce 5
+	ID  reduce 5
+	TYPE  reduce 5
+	','  reduce 5
+	AN  reduce 5
+	'&'  reduce 5
+	'*'  reduce 5
+	';'  reduce 5
+	'['  reduce 5
+	']'  reduce 5
+	'~'  reduce 5
+	'@'  reduce 5
+	'$'  reduce 5
+
+	exts  goto 4
+	exts1  goto 5
+
+
+state 3
+	exts : NAMESPACE . ID '{' exts1 '}'  (3)
+
+	ID  shift 6
+	.  error
+
+
+state 4
+	prog : s1 exts .  (1)
+
+	.  reduce 1
+
+
+state 5
+	exts : exts1 .  (4)
+	exts1 : exts1 . ext  (6)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 7
+	PRAGMA  shift 8
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	']'  shift 51
+	'@'  shift 52
+	'$'  shift 53
+	$end  reduce 4
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	ext  goto 64
+	dclrs  goto 65
+	pragma  goto 66
+	t1  goto 67
+	t2  goto 68
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 6
+	exts : NAMESPACE ID . '{' exts1 '}'  (3)
+
+	'{'  shift 71
+	.  error
+
+
+state 7
+	ext : error . ';'  (11)
+	dclrs : error . ID  (32)
+	dclrs : error . ')'  (33)
+	type : error . ID error  (141)
+	type : error . ID '>'  (142)
+	type : error . '>'  (143)
+
+	ID  shift 72
+	'>'  shift 73
+	';'  shift 74
+	')'  shift 75
+	.  error
+
+
+state 8
+	pragma : PRAGMA .  (12)
+
+	.  reduce 12
+
+
+state 9
+	store : AUTO .  (178)
+
+	.  reduce 178
+
+
+state 10
+	type : DOUBLE .  (111)
+
+	.  reduce 111
+
+
+state 11
+	type : INT .  (105)
+
+	.  reduce 105
+
+
+state 12
+	type : STRUCT . '{' s2 decls '}'  (125)
+	type : STRUCT . id  (127)
+	type : STRUCT . error '}'  (145)
+	struct : STRUCT . id  (148)
+
+	error  shift 76
+	ID  shift 77
+	TYPE  shift 78
+	'{'  shift 79
+	.  error
+
+	id  goto 80
+
+
+state 13
+	type : LONG .  (106)
+
+	.  reduce 106
+
+
+state 14
+	type : ENUM . '{' s2 dclrs s5 '}'  (131)
+	type : ENUM . '*' '{' s2 dclrs s5 '}'  (132)
+	type : ENUM . id  (137)
+	type : ENUM . sc  (138)
+	type : ENUM . error '}'  (147)
+	enum : ENUM . id utype  (150)
+	enumsc : ENUM . sc utype  (151)
+	mask : ENUM . '*' id utype  (152)
+	masksc : ENUM . '*' sc utype  (153)
+
+	error  shift 81
+	STRUCT  shift 82
+	CLASS  shift 83
+	ID  shift 77
+	TYPE  shift 78
+	'*'  shift 84
+	'{'  shift 85
+	.  error
+
+	id  goto 86
+	sc  goto 87
+
+
+state 15
+	store : REGISTER .  (179)
+
+	.  reduce 179
+
+
+state 16
+	store : TYPEDEF .  (183)
+
+	.  reduce 183
+
+
+state 17
+	type : CHAR .  (102)
+
+	.  reduce 102
+
+
+state 18
+	store : EXTERN .  (182)
+
+	.  reduce 182
+
+
+state 19
+	store : RETURN .  (191)
+
+	.  reduce 191
+
+
+state 20
+	type : UNION . '{' s3 decls '}'  (128)
+	type : UNION . id '{' s3 decls '}'  (129)
+	type : UNION . id  (130)
+	type : UNION . error '}'  (146)
+
+	error  shift 88
+	ID  shift 77
+	TYPE  shift 78
+	'{'  shift 89
+	.  error
+
+	id  goto 90
+
+
+state 21
+	store : CONST .  (185)
+
+	.  reduce 185
+
+
+state 22
+	type : FLOAT .  (110)
+
+	.  reduce 110
+
+
+state 23
+	type : SHORT .  (104)
+
+	.  reduce 104
+
+
+state 24
+	type : UNSIGNED .  (113)
+
+	.  reduce 113
+
+
+state 25
+	type : SIGNED .  (112)
+
+	.  reduce 112
+
+
+state 26
+	type : VOID .  (100)
+
+	.  reduce 100
+
+
+state 27
+	store : VOLATILE .  (194)
+
+	.  reduce 194
+
+
+state 28
+	store : STATIC .  (180)
+
+	.  reduce 180
+
+
+state 29
+	type : CLASS . '{' s2 decls '}'  (120)
+	type : CLASS . error '}'  (144)
+	class : CLASS . id  (149)
+
+	error  shift 91
+	ID  shift 77
+	TYPE  shift 78
+	'{'  shift 92
+	.  error
+
+	id  goto 93
+
+
+state 30
+	store : VIRTUAL .  (184)
+	virtual : VIRTUAL .  (203)
+
+	error  reduce 184
+	AUTO  reduce 184
+	DOUBLE  reduce 184
+	INT  reduce 184
+	STRUCT  reduce 184
+	LONG  reduce 184
+	ENUM  reduce 184
+	REGISTER  reduce 184
+	TYPEDEF  reduce 184
+	CHAR  reduce 184
+	EXTERN  reduce 184
+	RETURN  reduce 184
+	UNION  reduce 184
+	CONST  reduce 184
+	FLOAT  reduce 184
+	SHORT  reduce 184
+	UNSIGNED  reduce 184
+	SIGNED  reduce 184
+	VOID  reduce 184
+	VOLATILE  reduce 184
+	STATIC  reduce 184
+	CLASS  reduce 184
+	VIRTUAL  reduce 184
+	INLINE  reduce 184
+	OPERATOR  reduce 184
+	LLONG  reduce 184
+	BOOL  reduce 184
+	WCHAR  reduce 184
+	TIME  reduce 184
+	ULLONG  reduce 184
+	MUSTUNDERSTAND  reduce 184
+	SIZE  reduce 184
+	FRIEND  reduce 184
+	TEMPLATE  reduce 184
+	EXPLICIT  reduce 184
+	MUTABLE  reduce 184
+	FINAL  reduce 184
+	OVERRIDE  reduce 184
+	UCHAR  reduce 184
+	USHORT  reduce 184
+	UINT  reduce 184
+	ULONG  reduce 184
+	ID  reduce 184
+	TYPE  reduce 184
+	','  reduce 184
+	AN  reduce 184
+	'&'  reduce 184
+	'*'  reduce 184
+	'}'  reduce 184
+	';'  reduce 184
+	'~'  reduce 203
+	'@'  reduce 184
+	'$'  reduce 184
+
+
+state 31
+	store : INLINE .  (189)
+
+	.  reduce 189
+
+
+state 32
+	type : LLONG .  (107)
+
+	.  reduce 107
+
+
+state 33
+	type : BOOL .  (101)
+
+	.  reduce 101
+
+
+state 34
+	type : WCHAR .  (103)
+
+	.  reduce 103
+
+
+state 35
+	type : TIME .  (118)
+
+	.  reduce 118
+
+
+state 36
+	type : ULLONG .  (108)
+
+	.  reduce 108
+
+
+state 37
+	store : MUSTUNDERSTAND .  (190)
+
+	.  reduce 190
+
+
+state 38
+	type : SIZE .  (109)
+
+	.  reduce 109
+
+
+state 39
+	store : FRIEND .  (188)
+
+	.  reduce 188
+
+
+state 40
+	type : TEMPLATE . '<' tname id '>' CLASS id  (119)
+
+	'<'  shift 94
+	.  error
+
+
+state 41
+	store : EXPLICIT .  (181)
+
+	.  reduce 181
+
+
+state 42
+	store : MUTABLE .  (195)
+
+	.  reduce 195
+
+
+state 43
+	store : FINAL .  (186)
+
+	.  reduce 186
+
+
+state 44
+	store : OVERRIDE .  (187)
+
+	.  reduce 187
+
+
+state 45
+	type : UCHAR .  (114)
+
+	.  reduce 114
+
+
+state 46
+	type : USHORT .  (115)
+
+	.  reduce 115
+
+
+state 47
+	type : UINT .  (116)
+
+	.  reduce 116
+
+
+state 48
+	type : ULONG .  (117)
+
+	.  reduce 117
+
+
+state 49
+	ctor : TYPE .  (76)
+	type : TYPE .  (139)
+	type : TYPE . '<' texpf '>'  (140)
+
+	'<'  shift 95
+	error  reduce 139
+	AUTO  reduce 139
+	DOUBLE  reduce 139
+	INT  reduce 139
+	STRUCT  reduce 139
+	LONG  reduce 139
+	ENUM  reduce 139
+	REGISTER  reduce 139
+	TYPEDEF  reduce 139
+	CHAR  reduce 139
+	EXTERN  reduce 139
+	RETURN  reduce 139
+	UNION  reduce 139
+	CONST  reduce 139
+	FLOAT  reduce 139
+	SHORT  reduce 139
+	UNSIGNED  reduce 139
+	SIGNED  reduce 139
+	VOID  reduce 139
+	VOLATILE  reduce 139
+	STATIC  reduce 139
+	CLASS  reduce 139
+	VIRTUAL  reduce 139
+	INLINE  reduce 139
+	OPERATOR  reduce 139
+	LLONG  reduce 139
+	BOOL  reduce 139
+	WCHAR  reduce 139
+	TIME  reduce 139
+	ULLONG  reduce 139
+	MUSTUNDERSTAND  reduce 139
+	SIZE  reduce 139
+	FRIEND  reduce 139
+	TEMPLATE  reduce 139
+	EXPLICIT  reduce 139
+	MUTABLE  reduce 139
+	FINAL  reduce 139
+	OVERRIDE  reduce 139
+	UCHAR  reduce 139
+	USHORT  reduce 139
+	UINT  reduce 139
+	ULONG  reduce 139
+	ID  reduce 139
+	TYPE  reduce 139
+	','  reduce 139
+	AN  reduce 139
+	'&'  reduce 139
+	'*'  reduce 139
+	'}'  reduce 139
+	';'  reduce 139
+	'('  reduce 76
+	'@'  reduce 139
+	'$'  reduce 139
+
+
+state 50
+	t1 : '[' .  (20)
+
+	.  reduce 20
+
+
+state 51
+	t2 : ']' .  (21)
+
+	.  reduce 21
+
+
+state 52
+	store : '@' .  (192)
+
+	.  reduce 192
+
+
+state 53
+	store : '$' .  (193)
+
+	.  reduce 193
+
+
+state 54
+	spec : type . spec  (95)
+	spec : .  (93)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	';'  reduce 93
+
+	type  goto 54
+	store  goto 55
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 99
+
+
+state 55
+	spec : store . spec  (94)
+	spec : .  (93)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	';'  reduce 93
+
+	type  goto 54
+	store  goto 55
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 100
+
+
+state 56
+	dtor : virtual . '~' TYPE  (77)
+
+	'~'  shift 101
+	.  error
+
+
+state 57
+	type : struct . '{' s2 decls '}'  (126)
+
+	'{'  shift 102
+	.  error
+
+
+58: shift/reduce conflict (shift 103, reduce 123) on ':'
+state 58
+	type : class . '{' s2 decls '}'  (121)
+	type : class . ':' base '{' s2 decls '}'  (122)
+	type : class .  (123)
+	type : class . ':' base  (124)
+
+	':'  shift 103
+	'{'  shift 104
+	error  reduce 123
+	AUTO  reduce 123
+	DOUBLE  reduce 123
+	INT  reduce 123
+	STRUCT  reduce 123
+	LONG  reduce 123
+	ENUM  reduce 123
+	REGISTER  reduce 123
+	TYPEDEF  reduce 123
+	CHAR  reduce 123
+	EXTERN  reduce 123
+	RETURN  reduce 123
+	UNION  reduce 123
+	CONST  reduce 123
+	FLOAT  reduce 123
+	SHORT  reduce 123
+	UNSIGNED  reduce 123
+	SIGNED  reduce 123
+	VOID  reduce 123
+	VOLATILE  reduce 123
+	STATIC  reduce 123
+	CLASS  reduce 123
+	VIRTUAL  reduce 123
+	INLINE  reduce 123
+	OPERATOR  reduce 123
+	LLONG  reduce 123
+	BOOL  reduce 123
+	WCHAR  reduce 123
+	TIME  reduce 123
+	ULLONG  reduce 123
+	MUSTUNDERSTAND  reduce 123
+	SIZE  reduce 123
+	FRIEND  reduce 123
+	TEMPLATE  reduce 123
+	EXPLICIT  reduce 123
+	MUTABLE  reduce 123
+	FINAL  reduce 123
+	OVERRIDE  reduce 123
+	UCHAR  reduce 123
+	USHORT  reduce 123
+	UINT  reduce 123
+	ULONG  reduce 123
+	ID  reduce 123
+	TYPE  reduce 123
+	LNG  reduce 123
+	','  reduce 123
+	'='  reduce 123
+	AN  reduce 123
+	'&'  reduce 123
+	EQ  reduce 123
+	'>'  reduce 123
+	'*'  reduce 123
+	'}'  reduce 123
+	';'  reduce 123
+	'['  reduce 123
+	')'  reduce 123
+	'('  reduce 123
+	'@'  reduce 123
+	'$'  reduce 123
+
+
+state 59
+	type : enum . '{' s2 dclrs s5 '}'  (133)
+
+	'{'  shift 105
+	.  error
+
+
+state 60
+	type : enumsc . '{' s2 dclrs s5 '}'  (134)
+
+	'{'  shift 106
+	.  error
+
+
+state 61
+	type : mask . '{' s4 dclrs s5 '}'  (135)
+
+	'{'  shift 107
+	.  error
+
+
+state 62
+	type : masksc . '{' s4 dclrs s5 '}'  (136)
+
+	'{'  shift 108
+	.  error
+
+
+state 63
+	dclrs : spec .  (25)
+	dclrs : spec . dclr  (26)
+	dclrs : spec . fdclr func  (27)
+	ptrs : .  (204)
+
+	OPERATOR  reduce 204
+	ID  reduce 204
+	','  reduce 25
+	AN  reduce 204
+	'&'  reduce 204
+	'*'  reduce 204
+	'}'  reduce 25
+	';'  reduce 25
+
+	ptrs  goto 109
+	dclr  goto 110
+	fdclr  goto 111
+
+
+state 64
+	exts1 : exts1 ext .  (6)
+
+	.  reduce 6
+
+
+state 65
+	ext : dclrs . ';'  (7)
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+
+	','  shift 112
+	';'  shift 113
+	.  error
+
+
+state 66
+	ext : pragma .  (8)
+
+	.  reduce 8
+
+
+state 67
+	ext : t1 .  (9)
+
+	.  reduce 9
+
+
+state 68
+	ext : t2 .  (10)
+
+	.  reduce 10
+
+
+state 69
+	dclrs : ctor . func  (28)
+	fname : .  (79)
+
+	.  reduce 79
+
+	fname  goto 114
+	func  goto 115
+
+
+state 70
+	dclrs : dtor . func  (29)
+	fname : .  (79)
+
+	.  reduce 79
+
+	fname  goto 114
+	func  goto 116
+
+
+state 71
+	exts : NAMESPACE ID '{' . exts1 '}'  (3)
+	exts1 : .  (5)
+
+	.  reduce 5
+
+	exts1  goto 117
+
+
+state 72
+	dclrs : error ID .  (32)
+	type : error ID . error  (141)
+	type : error ID . '>'  (142)
+
+	error  shift 118
+	'>'  shift 119
+	','  reduce 32
+	'}'  reduce 32
+	';'  reduce 32
+
+
+state 73
+	type : error '>' .  (143)
+
+	.  reduce 143
+
+
+state 74
+	ext : error ';' .  (11)
+
+	.  reduce 11
+
+
+state 75
+	dclrs : error ')' .  (33)
+
+	.  reduce 33
+
+
+state 76
+	type : STRUCT error . '}'  (145)
+
+	'}'  shift 120
+	.  error
+
+
+state 77
+	id : ID .  (36)
+
+	.  reduce 36
+
+
+state 78
+	id : TYPE .  (37)
+
+	.  reduce 37
+
+
+state 79
+	type : STRUCT '{' . s2 decls '}'  (125)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 121
+
+
+state 80
+	type : STRUCT id .  (127)
+	struct : STRUCT id .  (148)
+
+	error  reduce 127
+	AUTO  reduce 127
+	DOUBLE  reduce 127
+	INT  reduce 127
+	STRUCT  reduce 127
+	LONG  reduce 127
+	ENUM  reduce 127
+	REGISTER  reduce 127
+	TYPEDEF  reduce 127
+	CHAR  reduce 127
+	EXTERN  reduce 127
+	RETURN  reduce 127
+	UNION  reduce 127
+	CONST  reduce 127
+	FLOAT  reduce 127
+	SHORT  reduce 127
+	UNSIGNED  reduce 127
+	SIGNED  reduce 127
+	VOID  reduce 127
+	VOLATILE  reduce 127
+	STATIC  reduce 127
+	CLASS  reduce 127
+	VIRTUAL  reduce 127
+	INLINE  reduce 127
+	OPERATOR  reduce 127
+	LLONG  reduce 127
+	BOOL  reduce 127
+	WCHAR  reduce 127
+	TIME  reduce 127
+	ULLONG  reduce 127
+	MUSTUNDERSTAND  reduce 127
+	SIZE  reduce 127
+	FRIEND  reduce 127
+	TEMPLATE  reduce 127
+	EXPLICIT  reduce 127
+	MUTABLE  reduce 127
+	FINAL  reduce 127
+	OVERRIDE  reduce 127
+	UCHAR  reduce 127
+	USHORT  reduce 127
+	UINT  reduce 127
+	ULONG  reduce 127
+	ID  reduce 127
+	TYPE  reduce 127
+	LNG  reduce 127
+	','  reduce 127
+	'='  reduce 127
+	':'  reduce 127
+	AN  reduce 127
+	'&'  reduce 127
+	EQ  reduce 127
+	'>'  reduce 127
+	'*'  reduce 127
+	'{'  reduce 148
+	'}'  reduce 127
+	';'  reduce 127
+	'['  reduce 127
+	')'  reduce 127
+	'('  reduce 127
+	'@'  reduce 127
+	'$'  reduce 127
+
+
+state 81
+	type : ENUM error . '}'  (147)
+
+	'}'  shift 122
+	.  error
+
+
+state 82
+	sc : STRUCT . id  (154)
+
+	ID  shift 77
+	TYPE  shift 78
+	.  error
+
+	id  goto 123
+
+
+state 83
+	sc : CLASS . id  (155)
+
+	ID  shift 77
+	TYPE  shift 78
+	.  error
+
+	id  goto 124
+
+
+state 84
+	type : ENUM '*' . '{' s2 dclrs s5 '}'  (132)
+	mask : ENUM '*' . id utype  (152)
+	masksc : ENUM '*' . sc utype  (153)
+
+	STRUCT  shift 82
+	CLASS  shift 83
+	ID  shift 77
+	TYPE  shift 78
+	'{'  shift 125
+	.  error
+
+	id  goto 126
+	sc  goto 127
+
+
+state 85
+	type : ENUM '{' . s2 dclrs s5 '}'  (131)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 128
+
+
+86: shift/reduce conflict (shift 129, reduce 137) on ':'
+state 86
+	type : ENUM id .  (137)
+	enum : ENUM id . utype  (150)
+	utype : .  (164)
+
+	':'  shift 129
+	error  reduce 137
+	AUTO  reduce 137
+	DOUBLE  reduce 137
+	INT  reduce 137
+	STRUCT  reduce 137
+	LONG  reduce 137
+	ENUM  reduce 137
+	REGISTER  reduce 137
+	TYPEDEF  reduce 137
+	CHAR  reduce 137
+	EXTERN  reduce 137
+	RETURN  reduce 137
+	UNION  reduce 137
+	CONST  reduce 137
+	FLOAT  reduce 137
+	SHORT  reduce 137
+	UNSIGNED  reduce 137
+	SIGNED  reduce 137
+	VOID  reduce 137
+	VOLATILE  reduce 137
+	STATIC  reduce 137
+	CLASS  reduce 137
+	VIRTUAL  reduce 137
+	INLINE  reduce 137
+	OPERATOR  reduce 137
+	LLONG  reduce 137
+	BOOL  reduce 137
+	WCHAR  reduce 137
+	TIME  reduce 137
+	ULLONG  reduce 137
+	MUSTUNDERSTAND  reduce 137
+	SIZE  reduce 137
+	FRIEND  reduce 137
+	TEMPLATE  reduce 137
+	EXPLICIT  reduce 137
+	MUTABLE  reduce 137
+	FINAL  reduce 137
+	OVERRIDE  reduce 137
+	UCHAR  reduce 137
+	USHORT  reduce 137
+	UINT  reduce 137
+	ULONG  reduce 137
+	ID  reduce 137
+	TYPE  reduce 137
+	LNG  reduce 137
+	','  reduce 137
+	'='  reduce 137
+	AN  reduce 137
+	'&'  reduce 137
+	EQ  reduce 137
+	'>'  reduce 137
+	'*'  reduce 137
+	'{'  reduce 164
+	'}'  reduce 137
+	';'  reduce 137
+	'['  reduce 137
+	')'  reduce 137
+	'('  reduce 137
+	'@'  reduce 137
+	'$'  reduce 137
+
+	utype  goto 130
+
+
+87: shift/reduce conflict (shift 129, reduce 138) on ':'
+state 87
+	type : ENUM sc .  (138)
+	enumsc : ENUM sc . utype  (151)
+	utype : .  (164)
+
+	':'  shift 129
+	error  reduce 138
+	AUTO  reduce 138
+	DOUBLE  reduce 138
+	INT  reduce 138
+	STRUCT  reduce 138
+	LONG  reduce 138
+	ENUM  reduce 138
+	REGISTER  reduce 138
+	TYPEDEF  reduce 138
+	CHAR  reduce 138
+	EXTERN  reduce 138
+	RETURN  reduce 138
+	UNION  reduce 138
+	CONST  reduce 138
+	FLOAT  reduce 138
+	SHORT  reduce 138
+	UNSIGNED  reduce 138
+	SIGNED  reduce 138
+	VOID  reduce 138
+	VOLATILE  reduce 138
+	STATIC  reduce 138
+	CLASS  reduce 138
+	VIRTUAL  reduce 138
+	INLINE  reduce 138
+	OPERATOR  reduce 138
+	LLONG  reduce 138
+	BOOL  reduce 138
+	WCHAR  reduce 138
+	TIME  reduce 138
+	ULLONG  reduce 138
+	MUSTUNDERSTAND  reduce 138
+	SIZE  reduce 138
+	FRIEND  reduce 138
+	TEMPLATE  reduce 138
+	EXPLICIT  reduce 138
+	MUTABLE  reduce 138
+	FINAL  reduce 138
+	OVERRIDE  reduce 138
+	UCHAR  reduce 138
+	USHORT  reduce 138
+	UINT  reduce 138
+	ULONG  reduce 138
+	ID  reduce 138
+	TYPE  reduce 138
+	LNG  reduce 138
+	','  reduce 138
+	'='  reduce 138
+	AN  reduce 138
+	'&'  reduce 138
+	EQ  reduce 138
+	'>'  reduce 138
+	'*'  reduce 138
+	'{'  reduce 164
+	'}'  reduce 138
+	';'  reduce 138
+	'['  reduce 138
+	')'  reduce 138
+	'('  reduce 138
+	'@'  reduce 138
+	'$'  reduce 138
+
+	utype  goto 131
+
+
+state 88
+	type : UNION error . '}'  (146)
+
+	'}'  shift 132
+	.  error
+
+
+state 89
+	type : UNION '{' . s3 decls '}'  (128)
+	s3 : .  (173)
+
+	.  reduce 173
+
+	s3  goto 133
+
+
+state 90
+	type : UNION id . '{' s3 decls '}'  (129)
+	type : UNION id .  (130)
+
+	'{'  shift 134
+	error  reduce 130
+	AUTO  reduce 130
+	DOUBLE  reduce 130
+	INT  reduce 130
+	STRUCT  reduce 130
+	LONG  reduce 130
+	ENUM  reduce 130
+	REGISTER  reduce 130
+	TYPEDEF  reduce 130
+	CHAR  reduce 130
+	EXTERN  reduce 130
+	RETURN  reduce 130
+	UNION  reduce 130
+	CONST  reduce 130
+	FLOAT  reduce 130
+	SHORT  reduce 130
+	UNSIGNED  reduce 130
+	SIGNED  reduce 130
+	VOID  reduce 130
+	VOLATILE  reduce 130
+	STATIC  reduce 130
+	CLASS  reduce 130
+	VIRTUAL  reduce 130
+	INLINE  reduce 130
+	OPERATOR  reduce 130
+	LLONG  reduce 130
+	BOOL  reduce 130
+	WCHAR  reduce 130
+	TIME  reduce 130
+	ULLONG  reduce 130
+	MUSTUNDERSTAND  reduce 130
+	SIZE  reduce 130
+	FRIEND  reduce 130
+	TEMPLATE  reduce 130
+	EXPLICIT  reduce 130
+	MUTABLE  reduce 130
+	FINAL  reduce 130
+	OVERRIDE  reduce 130
+	UCHAR  reduce 130
+	USHORT  reduce 130
+	UINT  reduce 130
+	ULONG  reduce 130
+	ID  reduce 130
+	TYPE  reduce 130
+	LNG  reduce 130
+	','  reduce 130
+	'='  reduce 130
+	':'  reduce 130
+	AN  reduce 130
+	'&'  reduce 130
+	EQ  reduce 130
+	'>'  reduce 130
+	'*'  reduce 130
+	'}'  reduce 130
+	';'  reduce 130
+	'['  reduce 130
+	')'  reduce 130
+	'('  reduce 130
+	'@'  reduce 130
+	'$'  reduce 130
+
+
+state 91
+	type : CLASS error . '}'  (144)
+
+	'}'  shift 135
+	.  error
+
+
+state 92
+	type : CLASS '{' . s2 decls '}'  (120)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 136
+
+
+state 93
+	class : CLASS id .  (149)
+
+	.  reduce 149
+
+
+state 94
+	type : TEMPLATE '<' . tname id '>' CLASS id  (119)
+
+	CLASS  shift 137
+	TYPENAME  shift 138
+	.  error
+
+	tname  goto 139
+
+
+state 95
+	type : TYPE '<' . texpf '>'  (140)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	.  error
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 142
+	texpf  goto 143
+	texp  goto 144
+
+
+state 96
+	type : error . ID error  (141)
+	type : error . ID '>'  (142)
+	type : error . '>'  (143)
+
+	ID  shift 145
+	'>'  shift 73
+	.  error
+
+
+state 97
+	store : VIRTUAL .  (184)
+
+	.  reduce 184
+
+
+state 98
+	type : TYPE .  (139)
+	type : TYPE . '<' texpf '>'  (140)
+
+	'<'  shift 95
+	error  reduce 139
+	AUTO  reduce 139
+	DOUBLE  reduce 139
+	INT  reduce 139
+	STRUCT  reduce 139
+	LONG  reduce 139
+	ENUM  reduce 139
+	REGISTER  reduce 139
+	TYPEDEF  reduce 139
+	CHAR  reduce 139
+	EXTERN  reduce 139
+	RETURN  reduce 139
+	UNION  reduce 139
+	CONST  reduce 139
+	FLOAT  reduce 139
+	SHORT  reduce 139
+	UNSIGNED  reduce 139
+	SIGNED  reduce 139
+	VOID  reduce 139
+	VOLATILE  reduce 139
+	STATIC  reduce 139
+	CLASS  reduce 139
+	VIRTUAL  reduce 139
+	INLINE  reduce 139
+	OPERATOR  reduce 139
+	LLONG  reduce 139
+	BOOL  reduce 139
+	WCHAR  reduce 139
+	TIME  reduce 139
+	ULLONG  reduce 139
+	MUSTUNDERSTAND  reduce 139
+	SIZE  reduce 139
+	FRIEND  reduce 139
+	TEMPLATE  reduce 139
+	EXPLICIT  reduce 139
+	MUTABLE  reduce 139
+	FINAL  reduce 139
+	OVERRIDE  reduce 139
+	UCHAR  reduce 139
+	USHORT  reduce 139
+	UINT  reduce 139
+	ULONG  reduce 139
+	ID  reduce 139
+	TYPE  reduce 139
+	LNG  reduce 139
+	','  reduce 139
+	'='  reduce 139
+	':'  reduce 139
+	AN  reduce 139
+	'&'  reduce 139
+	EQ  reduce 139
+	'>'  reduce 139
+	'*'  reduce 139
+	'}'  reduce 139
+	';'  reduce 139
+	'['  reduce 139
+	')'  reduce 139
+	'('  reduce 139
+	'@'  reduce 139
+	'$'  reduce 139
+
+
+state 99
+	spec : type spec .  (95)
+
+	.  reduce 95
+
+
+state 100
+	spec : store spec .  (94)
+
+	.  reduce 94
+
+
+state 101
+	dtor : virtual '~' . TYPE  (77)
+
+	TYPE  shift 146
+	.  error
+
+
+state 102
+	type : struct '{' . s2 decls '}'  (126)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 147
+
+
+state 103
+	type : class ':' . base '{' s2 decls '}'  (122)
+	type : class ':' . base  (124)
+
+	STRUCT  shift 148
+	PRIVATE  shift 149
+	PROTECTED  shift 150
+	PUBLIC  shift 151
+	TYPE  shift 152
+	.  error
+
+	base  goto 153
+
+
+state 104
+	type : class '{' . s2 decls '}'  (121)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 154
+
+
+state 105
+	type : enum '{' . s2 dclrs s5 '}'  (133)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 155
+
+
+state 106
+	type : enumsc '{' . s2 dclrs s5 '}'  (134)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 156
+
+
+state 107
+	type : mask '{' . s4 dclrs s5 '}'  (135)
+	s4 : .  (174)
+
+	.  reduce 174
+
+	s4  goto 157
+
+
+state 108
+	type : masksc '{' . s4 dclrs s5 '}'  (136)
+	s4 : .  (174)
+
+	.  reduce 174
+
+	s4  goto 158
+
+
+state 109
+	dclr : ptrs . ID arrayck tag bounds brinit  (34)
+	fdclr : ptrs . name  (35)
+	ptrs : ptrs . '*'  (205)
+	ptrs : ptrs . '&'  (206)
+	ptrs : ptrs . AN  (207)
+
+	OPERATOR  shift 159
+	ID  shift 160
+	AN  shift 161
+	'&'  shift 162
+	'*'  shift 163
+	.  error
+
+	name  goto 164
+
+
+state 110
+	dclrs : spec dclr .  (26)
+
+	.  reduce 26
+
+
+state 111
+	dclrs : spec fdclr . func  (27)
+	fname : .  (79)
+
+	.  reduce 79
+
+	fname  goto 114
+	func  goto 165
+
+
+state 112
+	dclrs : dclrs ',' . dclr  (30)
+	dclrs : dclrs ',' . fdclr func  (31)
+	ptrs : .  (204)
+
+	.  reduce 204
+
+	ptrs  goto 109
+	dclr  goto 166
+	fdclr  goto 167
+
+
+state 113
+	ext : dclrs ';' .  (7)
+
+	.  reduce 7
+
+
+state 114
+	func : fname . '(' s6 fargso ')' const abstract  (78)
+
+	'('  shift 168
+	.  error
+
+
+state 115
+	dclrs : ctor func .  (28)
+
+	.  reduce 28
+
+
+state 116
+	dclrs : dtor func .  (29)
+
+	.  reduce 29
+
+
+state 117
+	exts : NAMESPACE ID '{' exts1 . '}'  (3)
+	exts1 : exts1 . ext  (6)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 7
+	PRAGMA  shift 8
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'}'  shift 169
+	'['  shift 50
+	']'  shift 51
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	ext  goto 64
+	dclrs  goto 65
+	pragma  goto 66
+	t1  goto 67
+	t2  goto 68
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 118
+	type : error ID error .  (141)
+
+	.  reduce 141
+
+
+state 119
+	type : error ID '>' .  (142)
+
+	.  reduce 142
+
+
+state 120
+	type : STRUCT error '}' .  (145)
+
+	.  reduce 145
+
+
+state 121
+	type : STRUCT '{' s2 . decls '}'  (125)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 176
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 122
+	type : ENUM error '}' .  (147)
+
+	.  reduce 147
+
+
+state 123
+	sc : STRUCT id .  (154)
+
+	.  reduce 154
+
+
+state 124
+	sc : CLASS id .  (155)
+
+	.  reduce 155
+
+
+state 125
+	type : ENUM '*' '{' . s2 dclrs s5 '}'  (132)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 177
+
+
+state 126
+	mask : ENUM '*' id . utype  (152)
+	utype : .  (164)
+
+	':'  shift 129
+	'{'  reduce 164
+
+	utype  goto 178
+
+
+state 127
+	masksc : ENUM '*' sc . utype  (153)
+	utype : .  (164)
+
+	':'  shift 129
+	'{'  reduce 164
+
+	utype  goto 179
+
+
+state 128
+	type : ENUM '{' s2 . dclrs s5 '}'  (131)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 180
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 181
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 129
+	utype : ':' . CHAR  (156)
+	utype : ':' . WCHAR  (157)
+	utype : ':' . SHORT  (158)
+	utype : ':' . INT  (159)
+	utype : ':' . LONG  (160)
+	utype : ':' . LLONG  (161)
+	utype : ':' . TYPE  (162)
+	utype : ':' .  (163)
+
+	INT  shift 182
+	LONG  shift 183
+	CHAR  shift 184
+	SHORT  shift 185
+	LLONG  shift 186
+	WCHAR  shift 187
+	TYPE  shift 188
+	'{'  reduce 163
+
+
+state 130
+	enum : ENUM id utype .  (150)
+
+	.  reduce 150
+
+
+state 131
+	enumsc : ENUM sc utype .  (151)
+
+	.  reduce 151
+
+
+state 132
+	type : UNION error '}' .  (146)
+
+	.  reduce 146
+
+
+state 133
+	type : UNION '{' s3 . decls '}'  (128)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 189
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 134
+	type : UNION id '{' . s3 decls '}'  (129)
+	s3 : .  (173)
+
+	.  reduce 173
+
+	s3  goto 190
+
+
+state 135
+	type : CLASS error '}' .  (144)
+
+	.  reduce 144
+
+
+state 136
+	type : CLASS '{' s2 . decls '}'  (120)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 191
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 137
+	tname : CLASS .  (165)
+
+	.  reduce 165
+
+
+state 138
+	tname : TYPENAME .  (166)
+
+	.  reduce 166
+
+
+state 139
+	type : TEMPLATE '<' tname . id '>' CLASS id  (119)
+
+	ID  shift 77
+	TYPE  shift 78
+	.  error
+
+	id  goto 192
+
+
+state 140
+	tspec : type .  (97)
+	tspec : type . tspec  (99)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	ID  reduce 97
+	LNG  reduce 97
+	','  reduce 97
+	'='  reduce 97
+	':'  reduce 97
+	AN  reduce 97
+	'&'  reduce 97
+	EQ  reduce 97
+	'>'  reduce 97
+	'*'  reduce 97
+	'['  reduce 97
+	')'  reduce 97
+	'('  reduce 97
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 193
+
+
+state 141
+	tspec : store .  (96)
+	tspec : store . tspec  (98)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	ID  reduce 96
+	LNG  reduce 96
+	','  reduce 96
+	'='  reduce 96
+	':'  reduce 96
+	AN  reduce 96
+	'&'  reduce 96
+	EQ  reduce 96
+	'>'  reduce 96
+	'*'  reduce 96
+	'['  reduce 96
+	')'  reduce 96
+	'('  reduce 96
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 194
+
+
+state 142
+	texpf : tspec . ptrs '(' s6 fargso ')'  (90)
+	texp : tspec . ptrs array  (91)
+	texp : tspec . ptrs ID array  (92)
+	ptrs : .  (204)
+
+	.  reduce 204
+
+	ptrs  goto 195
+
+
+state 143
+	type : TYPE '<' texpf . '>'  (140)
+
+	'>'  shift 196
+	.  error
+
+
+state 144
+	texpf : texp .  (89)
+
+	.  reduce 89
+
+
+state 145
+	type : error ID . error  (141)
+	type : error ID . '>'  (142)
+
+	error  shift 118
+	'>'  shift 119
+	.  error
+
+
+state 146
+	dtor : virtual '~' TYPE .  (77)
+
+	.  reduce 77
+
+
+state 147
+	type : struct '{' s2 . decls '}'  (126)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 197
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 148
+	base : STRUCT . ID  (171)
+
+	ID  shift 198
+	.  error
+
+
+state 149
+	base : PRIVATE . base  (168)
+
+	STRUCT  shift 148
+	PRIVATE  shift 149
+	PROTECTED  shift 150
+	PUBLIC  shift 151
+	TYPE  shift 152
+	.  error
+
+	base  goto 199
+
+
+state 150
+	base : PROTECTED . base  (167)
+
+	STRUCT  shift 148
+	PRIVATE  shift 149
+	PROTECTED  shift 150
+	PUBLIC  shift 151
+	TYPE  shift 152
+	.  error
+
+	base  goto 200
+
+
+state 151
+	base : PUBLIC . base  (169)
+
+	STRUCT  shift 148
+	PRIVATE  shift 149
+	PROTECTED  shift 150
+	PUBLIC  shift 151
+	TYPE  shift 152
+	.  error
+
+	base  goto 201
+
+
+state 152
+	base : TYPE .  (170)
+
+	.  reduce 170
+
+
+state 153
+	type : class ':' base . '{' s2 decls '}'  (122)
+	type : class ':' base .  (124)
+
+	'{'  shift 202
+	error  reduce 124
+	AUTO  reduce 124
+	DOUBLE  reduce 124
+	INT  reduce 124
+	STRUCT  reduce 124
+	LONG  reduce 124
+	ENUM  reduce 124
+	REGISTER  reduce 124
+	TYPEDEF  reduce 124
+	CHAR  reduce 124
+	EXTERN  reduce 124
+	RETURN  reduce 124
+	UNION  reduce 124
+	CONST  reduce 124
+	FLOAT  reduce 124
+	SHORT  reduce 124
+	UNSIGNED  reduce 124
+	SIGNED  reduce 124
+	VOID  reduce 124
+	VOLATILE  reduce 124
+	STATIC  reduce 124
+	CLASS  reduce 124
+	VIRTUAL  reduce 124
+	INLINE  reduce 124
+	OPERATOR  reduce 124
+	LLONG  reduce 124
+	BOOL  reduce 124
+	WCHAR  reduce 124
+	TIME  reduce 124
+	ULLONG  reduce 124
+	MUSTUNDERSTAND  reduce 124
+	SIZE  reduce 124
+	FRIEND  reduce 124
+	TEMPLATE  reduce 124
+	EXPLICIT  reduce 124
+	MUTABLE  reduce 124
+	FINAL  reduce 124
+	OVERRIDE  reduce 124
+	UCHAR  reduce 124
+	USHORT  reduce 124
+	UINT  reduce 124
+	ULONG  reduce 124
+	ID  reduce 124
+	TYPE  reduce 124
+	LNG  reduce 124
+	','  reduce 124
+	'='  reduce 124
+	':'  reduce 124
+	AN  reduce 124
+	'&'  reduce 124
+	EQ  reduce 124
+	'>'  reduce 124
+	'*'  reduce 124
+	'}'  reduce 124
+	';'  reduce 124
+	'['  reduce 124
+	')'  reduce 124
+	'('  reduce 124
+	'@'  reduce 124
+	'$'  reduce 124
+
+
+state 154
+	type : class '{' s2 . decls '}'  (121)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 203
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 155
+	type : enum '{' s2 . dclrs s5 '}'  (133)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 180
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 204
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 156
+	type : enumsc '{' s2 . dclrs s5 '}'  (134)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 180
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 205
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 157
+	type : mask '{' s4 . dclrs s5 '}'  (135)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 180
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 206
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 158
+	type : masksc '{' s4 . dclrs s5 '}'  (136)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 180
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 207
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 159
+	name : OPERATOR . '!'  (39)
+	name : OPERATOR . '~'  (40)
+	name : OPERATOR . '='  (41)
+	name : OPERATOR . PA  (42)
+	name : OPERATOR . NA  (43)
+	name : OPERATOR . TA  (44)
+	name : OPERATOR . DA  (45)
+	name : OPERATOR . MA  (46)
+	name : OPERATOR . AA  (47)
+	name : OPERATOR . XA  (48)
+	name : OPERATOR . OA  (49)
+	name : OPERATOR . LA  (50)
+	name : OPERATOR . RA  (51)
+	name : OPERATOR . OR  (52)
+	name : OPERATOR . AN  (53)
+	name : OPERATOR . '|'  (54)
+	name : OPERATOR . '^'  (55)
+	name : OPERATOR . '&'  (56)
+	name : OPERATOR . EQ  (57)
+	name : OPERATOR . NE  (58)
+	name : OPERATOR . '<'  (59)
+	name : OPERATOR . LE  (60)
+	name : OPERATOR . '>'  (61)
+	name : OPERATOR . GE  (62)
+	name : OPERATOR . LS  (63)
+	name : OPERATOR . RS  (64)
+	name : OPERATOR . '+'  (65)
+	name : OPERATOR . '-'  (66)
+	name : OPERATOR . '*'  (67)
+	name : OPERATOR . '/'  (68)
+	name : OPERATOR . '%'  (69)
+	name : OPERATOR . PP  (70)
+	name : OPERATOR . NN  (71)
+	name : OPERATOR . AR  (72)
+	name : OPERATOR . '[' ']'  (73)
+	name : OPERATOR . '(' ')'  (74)
+	name : OPERATOR . texp  (75)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'='  shift 208
+	PA  shift 209
+	NA  shift 210
+	TA  shift 211
+	DA  shift 212
+	MA  shift 213
+	AA  shift 214
+	XA  shift 215
+	OA  shift 216
+	LA  shift 217
+	RA  shift 218
+	OR  shift 219
+	AN  shift 220
+	'|'  shift 221
+	'^'  shift 222
+	'&'  shift 223
+	EQ  shift 224
+	NE  shift 225
+	'<'  shift 226
+	LE  shift 227
+	'>'  shift 228
+	GE  shift 229
+	LS  shift 230
+	RS  shift 231
+	'+'  shift 232
+	'-'  shift 233
+	'*'  shift 234
+	'/'  shift 235
+	'%'  shift 236
+	AR  shift 237
+	PP  shift 238
+	NN  shift 239
+	'['  shift 240
+	'!'  shift 241
+	'~'  shift 242
+	'('  shift 243
+	'@'  shift 52
+	'$'  shift 53
+	.  error
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 244
+	texp  goto 245
+
+
+state 160
+	dclr : ptrs ID . arrayck tag bounds brinit  (34)
+	name : ID .  (38)
+	array : .  (208)
+
+	'['  shift 246
+	null  reduce 208
+	LNG  reduce 208
+	DBL  reduce 208
+	CHR  reduce 208
+	TAG  reduce 208
+	STR  reduce 208
+	','  reduce 208
+	'='  reduce 208
+	':'  reduce 208
+	EQ  reduce 208
+	'<'  reduce 208
+	'+'  reduce 208
+	'-'  reduce 208
+	'{'  reduce 208
+	'}'  reduce 208
+	';'  reduce 208
+	'('  reduce 38
+
+	array  goto 247
+	arrayck  goto 248
+
+
+state 161
+	ptrs : ptrs AN .  (207)
+
+	.  reduce 207
+
+
+state 162
+	ptrs : ptrs '&' .  (206)
+
+	.  reduce 206
+
+
+state 163
+	ptrs : ptrs '*' .  (205)
+
+	.  reduce 205
+
+
+state 164
+	fdclr : ptrs name .  (35)
+
+	.  reduce 35
+
+
+state 165
+	dclrs : spec fdclr func .  (27)
+
+	.  reduce 27
+
+
+state 166
+	dclrs : dclrs ',' dclr .  (30)
+
+	.  reduce 30
+
+
+state 167
+	dclrs : dclrs ',' fdclr . func  (31)
+	fname : .  (79)
+
+	.  reduce 79
+
+	fname  goto 114
+	func  goto 249
+
+
+state 168
+	func : fname '(' . s6 fargso ')' const abstract  (78)
+	s6 : .  (177)
+
+	.  reduce 177
+
+	s6  goto 250
+
+
+state 169
+	exts : NAMESPACE ID '{' exts1 '}' .  (3)
+
+	.  reduce 3
+
+
+state 170
+	decls : error . ';'  (19)
+	dclrs : error . ID  (32)
+	dclrs : error . ')'  (33)
+	type : error . ID error  (141)
+	type : error . ID '>'  (142)
+	type : error . '>'  (143)
+
+	ID  shift 72
+	'>'  shift 73
+	';'  shift 251
+	')'  shift 75
+	.  error
+
+
+state 171
+	decls : PRIVATE . ':' t3 decls  (15)
+
+	':'  shift 252
+	.  error
+
+
+state 172
+	decls : PROTECTED . ':' t4 decls  (16)
+
+	':'  shift 253
+	.  error
+
+
+state 173
+	decls : PUBLIC . ':' t5 decls  (17)
+
+	':'  shift 254
+	.  error
+
+
+state 174
+	decls : dclrs . ';' decls  (14)
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+
+	','  shift 112
+	';'  shift 255
+	.  error
+
+
+state 175
+	decls : t1 . decls t2 decls  (18)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	';'  reduce 93
+	']'  reduce 13
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 256
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 176
+	type : STRUCT '{' s2 decls . '}'  (125)
+
+	'}'  shift 257
+	.  error
+
+
+state 177
+	type : ENUM '*' '{' s2 . dclrs s5 '}'  (132)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 180
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 258
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 178
+	mask : ENUM '*' id utype .  (152)
+
+	.  reduce 152
+
+
+state 179
+	masksc : ENUM '*' sc utype .  (153)
+
+	.  reduce 153
+
+
+state 180
+	dclrs : error . ID  (32)
+	dclrs : error . ')'  (33)
+	type : error . ID error  (141)
+	type : error . ID '>'  (142)
+	type : error . '>'  (143)
+
+	ID  shift 72
+	'>'  shift 73
+	')'  shift 75
+	.  error
+
+
+state 181
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+	type : ENUM '{' s2 dclrs . s5 '}'  (131)
+	s5 : .  (175)
+
+	','  shift 259
+	'}'  reduce 175
+
+	s5  goto 260
+
+
+state 182
+	utype : ':' INT .  (159)
+
+	.  reduce 159
+
+
+state 183
+	utype : ':' LONG .  (160)
+
+	.  reduce 160
+
+
+state 184
+	utype : ':' CHAR .  (156)
+
+	.  reduce 156
+
+
+state 185
+	utype : ':' SHORT .  (158)
+
+	.  reduce 158
+
+
+state 186
+	utype : ':' LLONG .  (161)
+
+	.  reduce 161
+
+
+state 187
+	utype : ':' WCHAR .  (157)
+
+	.  reduce 157
+
+
+state 188
+	utype : ':' TYPE .  (162)
+
+	.  reduce 162
+
+
+state 189
+	type : UNION '{' s3 decls . '}'  (128)
+
+	'}'  shift 261
+	.  error
+
+
+state 190
+	type : UNION id '{' s3 . decls '}'  (129)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 262
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 191
+	type : CLASS '{' s2 decls . '}'  (120)
+
+	'}'  shift 263
+	.  error
+
+
+state 192
+	type : TEMPLATE '<' tname id . '>' CLASS id  (119)
+
+	'>'  shift 264
+	.  error
+
+
+state 193
+	tspec : type tspec .  (99)
+
+	.  reduce 99
+
+
+state 194
+	tspec : store tspec .  (98)
+
+	.  reduce 98
+
+
+state 195
+	texpf : tspec ptrs . '(' s6 fargso ')'  (90)
+	texp : tspec ptrs . array  (91)
+	texp : tspec ptrs . ID array  (92)
+	ptrs : ptrs . '*'  (205)
+	ptrs : ptrs . '&'  (206)
+	ptrs : ptrs . AN  (207)
+	array : .  (208)
+
+	ID  shift 265
+	AN  shift 161
+	'&'  shift 162
+	'*'  shift 163
+	'['  shift 246
+	'('  shift 266
+	'>'  reduce 208
+
+	array  goto 267
+
+
+state 196
+	type : TYPE '<' texpf '>' .  (140)
+
+	.  reduce 140
+
+
+state 197
+	type : struct '{' s2 decls . '}'  (126)
+
+	'}'  shift 268
+	.  error
+
+
+state 198
+	base : STRUCT ID .  (171)
+
+	.  reduce 171
+
+
+state 199
+	base : PRIVATE base .  (168)
+
+	.  reduce 168
+
+
+state 200
+	base : PROTECTED base .  (167)
+
+	.  reduce 167
+
+
+state 201
+	base : PUBLIC base .  (169)
+
+	.  reduce 169
+
+
+state 202
+	type : class ':' base '{' . s2 decls '}'  (122)
+	s2 : .  (172)
+
+	.  reduce 172
+
+	s2  goto 269
+
+
+state 203
+	type : class '{' s2 decls . '}'  (121)
+
+	'}'  shift 270
+	.  error
+
+
+state 204
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+	type : enum '{' s2 dclrs . s5 '}'  (133)
+	s5 : .  (175)
+
+	','  shift 259
+	'}'  reduce 175
+
+	s5  goto 271
+
+
+state 205
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+	type : enumsc '{' s2 dclrs . s5 '}'  (134)
+	s5 : .  (175)
+
+	','  shift 259
+	'}'  reduce 175
+
+	s5  goto 272
+
+
+state 206
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+	type : mask '{' s4 dclrs . s5 '}'  (135)
+	s5 : .  (175)
+
+	','  shift 259
+	'}'  reduce 175
+
+	s5  goto 273
+
+
+state 207
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+	type : masksc '{' s4 dclrs . s5 '}'  (136)
+	s5 : .  (175)
+
+	','  shift 259
+	'}'  reduce 175
+
+	s5  goto 274
+
+
+state 208
+	name : OPERATOR '=' .  (41)
+
+	.  reduce 41
+
+
+state 209
+	name : OPERATOR PA .  (42)
+
+	.  reduce 42
+
+
+state 210
+	name : OPERATOR NA .  (43)
+
+	.  reduce 43
+
+
+state 211
+	name : OPERATOR TA .  (44)
+
+	.  reduce 44
+
+
+state 212
+	name : OPERATOR DA .  (45)
+
+	.  reduce 45
+
+
+state 213
+	name : OPERATOR MA .  (46)
+
+	.  reduce 46
+
+
+state 214
+	name : OPERATOR AA .  (47)
+
+	.  reduce 47
+
+
+state 215
+	name : OPERATOR XA .  (48)
+
+	.  reduce 48
+
+
+state 216
+	name : OPERATOR OA .  (49)
+
+	.  reduce 49
+
+
+state 217
+	name : OPERATOR LA .  (50)
+
+	.  reduce 50
+
+
+state 218
+	name : OPERATOR RA .  (51)
+
+	.  reduce 51
+
+
+state 219
+	name : OPERATOR OR .  (52)
+
+	.  reduce 52
+
+
+state 220
+	name : OPERATOR AN .  (53)
+
+	.  reduce 53
+
+
+state 221
+	name : OPERATOR '|' .  (54)
+
+	.  reduce 54
+
+
+state 222
+	name : OPERATOR '^' .  (55)
+
+	.  reduce 55
+
+
+state 223
+	name : OPERATOR '&' .  (56)
+
+	.  reduce 56
+
+
+state 224
+	name : OPERATOR EQ .  (57)
+
+	.  reduce 57
+
+
+state 225
+	name : OPERATOR NE .  (58)
+
+	.  reduce 58
+
+
+state 226
+	name : OPERATOR '<' .  (59)
+
+	.  reduce 59
+
+
+state 227
+	name : OPERATOR LE .  (60)
+
+	.  reduce 60
+
+
+state 228
+	name : OPERATOR '>' .  (61)
+
+	.  reduce 61
+
+
+state 229
+	name : OPERATOR GE .  (62)
+
+	.  reduce 62
+
+
+state 230
+	name : OPERATOR LS .  (63)
+
+	.  reduce 63
+
+
+state 231
+	name : OPERATOR RS .  (64)
+
+	.  reduce 64
+
+
+state 232
+	name : OPERATOR '+' .  (65)
+
+	.  reduce 65
+
+
+state 233
+	name : OPERATOR '-' .  (66)
+
+	.  reduce 66
+
+
+state 234
+	name : OPERATOR '*' .  (67)
+
+	.  reduce 67
+
+
+state 235
+	name : OPERATOR '/' .  (68)
+
+	.  reduce 68
+
+
+state 236
+	name : OPERATOR '%' .  (69)
+
+	.  reduce 69
+
+
+state 237
+	name : OPERATOR AR .  (72)
+
+	.  reduce 72
+
+
+state 238
+	name : OPERATOR PP .  (70)
+
+	.  reduce 70
+
+
+state 239
+	name : OPERATOR NN .  (71)
+
+	.  reduce 71
+
+
+state 240
+	name : OPERATOR '[' . ']'  (73)
+
+	']'  shift 275
+	.  error
+
+
+state 241
+	name : OPERATOR '!' .  (39)
+
+	.  reduce 39
+
+
+state 242
+	name : OPERATOR '~' .  (40)
+
+	.  reduce 40
+
+
+state 243
+	name : OPERATOR '(' . ')'  (74)
+
+	')'  shift 276
+	.  error
+
+
+state 244
+	texp : tspec . ptrs array  (91)
+	texp : tspec . ptrs ID array  (92)
+	ptrs : .  (204)
+
+	.  reduce 204
+
+	ptrs  goto 277
+
+
+state 245
+	name : OPERATOR texp .  (75)
+
+	.  reduce 75
+
+
+state 246
+	array : '[' . cexp ']' array  (209)
+	array : '[' . ']' array  (210)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	']'  shift 290
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	cexp  goto 294
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 247
+	arrayck : array .  (211)
+
+	.  reduce 211
+
+
+state 248
+	dclr : ptrs ID arrayck . tag bounds brinit  (34)
+	tag : .  (217)
+
+	TAG  shift 302
+	null  reduce 217
+	LNG  reduce 217
+	DBL  reduce 217
+	CHR  reduce 217
+	STR  reduce 217
+	','  reduce 217
+	'='  reduce 217
+	':'  reduce 217
+	EQ  reduce 217
+	'<'  reduce 217
+	'+'  reduce 217
+	'-'  reduce 217
+	'{'  reduce 217
+	'}'  reduce 217
+	';'  reduce 217
+
+	tag  goto 303
+
+
+state 249
+	dclrs : dclrs ',' fdclr func .  (31)
+
+	.  reduce 31
+
+
+state 250
+	func : fname '(' s6 . fargso ')' const abstract  (78)
+	fargso : .  (80)
+
+	error  shift 304
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	')'  reduce 80
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 305
+	fargso  goto 306
+	fargs  goto 307
+	farg  goto 308
+
+
+state 251
+	decls : error ';' .  (19)
+
+	.  reduce 19
+
+
+state 252
+	decls : PRIVATE ':' . t3 decls  (15)
+	t3 : .  (22)
+
+	.  reduce 22
+
+	t3  goto 309
+
+
+state 253
+	decls : PROTECTED ':' . t4 decls  (16)
+	t4 : .  (23)
+
+	.  reduce 23
+
+	t4  goto 310
+
+
+state 254
+	decls : PUBLIC ':' . t5 decls  (17)
+	t5 : .  (24)
+
+	.  reduce 24
+
+	t5  goto 311
+
+
+state 255
+	decls : dclrs ';' . decls  (14)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	']'  reduce 13
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 312
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 256
+	decls : t1 decls . t2 decls  (18)
+
+	']'  shift 51
+	.  error
+
+	t2  goto 313
+
+
+state 257
+	type : STRUCT '{' s2 decls '}' .  (125)
+
+	.  reduce 125
+
+
+state 258
+	dclrs : dclrs . ',' dclr  (30)
+	dclrs : dclrs . ',' fdclr func  (31)
+	type : ENUM '*' '{' s2 dclrs . s5 '}'  (132)
+	s5 : .  (175)
+
+	','  shift 259
+	'}'  reduce 175
+
+	s5  goto 314
+
+
+state 259
+	dclrs : dclrs ',' . dclr  (30)
+	dclrs : dclrs ',' . fdclr func  (31)
+	s5 : ',' .  (176)
+	ptrs : .  (204)
+
+	OPERATOR  reduce 204
+	ID  reduce 204
+	AN  reduce 204
+	'&'  reduce 204
+	'*'  reduce 204
+	'}'  reduce 176
+
+	ptrs  goto 109
+	dclr  goto 166
+	fdclr  goto 167
+
+
+state 260
+	type : ENUM '{' s2 dclrs s5 . '}'  (131)
+
+	'}'  shift 315
+	.  error
+
+
+state 261
+	type : UNION '{' s3 decls '}' .  (128)
+
+	.  reduce 128
+
+
+state 262
+	type : UNION id '{' s3 decls . '}'  (129)
+
+	'}'  shift 316
+	.  error
+
+
+state 263
+	type : CLASS '{' s2 decls '}' .  (120)
+
+	.  reduce 120
+
+
+state 264
+	type : TEMPLATE '<' tname id '>' . CLASS id  (119)
+
+	CLASS  shift 317
+	.  error
+
+
+state 265
+	texp : tspec ptrs ID . array  (92)
+	array : .  (208)
+
+	'['  shift 246
+	'>'  reduce 208
+	')'  reduce 208
+	'('  reduce 208
+
+	array  goto 318
+
+
+state 266
+	texpf : tspec ptrs '(' . s6 fargso ')'  (90)
+	s6 : .  (177)
+
+	.  reduce 177
+
+	s6  goto 319
+
+
+state 267
+	texp : tspec ptrs array .  (91)
+
+	.  reduce 91
+
+
+state 268
+	type : struct '{' s2 decls '}' .  (126)
+
+	.  reduce 126
+
+
+state 269
+	type : class ':' base '{' s2 . decls '}'  (122)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 320
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 270
+	type : class '{' s2 decls '}' .  (121)
+
+	.  reduce 121
+
+
+state 271
+	type : enum '{' s2 dclrs s5 . '}'  (133)
+
+	'}'  shift 321
+	.  error
+
+
+state 272
+	type : enumsc '{' s2 dclrs s5 . '}'  (134)
+
+	'}'  shift 322
+	.  error
+
+
+state 273
+	type : mask '{' s4 dclrs s5 . '}'  (135)
+
+	'}'  shift 323
+	.  error
+
+
+state 274
+	type : masksc '{' s4 dclrs s5 . '}'  (136)
+
+	'}'  shift 324
+	.  error
+
+
+state 275
+	name : OPERATOR '[' ']' .  (73)
+
+	.  reduce 73
+
+
+state 276
+	name : OPERATOR '(' ')' .  (74)
+
+	.  reduce 74
+
+
+state 277
+	texp : tspec ptrs . array  (91)
+	texp : tspec ptrs . ID array  (92)
+	ptrs : ptrs . '*'  (205)
+	ptrs : ptrs . '&'  (206)
+	ptrs : ptrs . AN  (207)
+	array : .  (208)
+
+	ID  shift 265
+	AN  shift 161
+	'&'  shift 162
+	'*'  shift 163
+	'['  shift 246
+	')'  reduce 208
+	'('  reduce 208
+
+	array  goto 267
+
+
+state 278
+	lexp : SIZEOF . '(' texp ')'  (283)
+
+	'('  shift 325
+	.  error
+
+
+state 279
+	pexp : CFALSE .  (291)
+
+	.  reduce 291
+
+
+state 280
+	pexp : CTRUE .  (292)
+
+	.  reduce 292
+
+
+state 281
+	pexp : ID .  (286)
+
+	.  reduce 286
+
+
+state 282
+	pexp : LNG .  (287)
+
+	.  reduce 287
+
+
+state 283
+	pexp : DBL .  (288)
+
+	.  reduce 288
+
+
+state 284
+	pexp : CHR .  (289)
+
+	.  reduce 289
+
+
+state 285
+	pexp : STR .  (290)
+
+	.  reduce 290
+
+
+state 286
+	lexp : '&' . lexp  (282)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	lexp  goto 326
+	pexp  goto 301
+
+
+state 287
+	lexp : '+' . lexp  (280)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	lexp  goto 327
+	pexp  goto 301
+
+
+state 288
+	lexp : '-' . lexp  (279)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	lexp  goto 328
+	pexp  goto 301
+
+
+state 289
+	lexp : '*' . lexp  (281)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	lexp  goto 329
+	pexp  goto 301
+
+
+state 290
+	array : '[' ']' . array  (210)
+	array : .  (208)
+
+	'['  shift 246
+	null  reduce 208
+	LNG  reduce 208
+	DBL  reduce 208
+	CHR  reduce 208
+	TAG  reduce 208
+	STR  reduce 208
+	','  reduce 208
+	'='  reduce 208
+	':'  reduce 208
+	EQ  reduce 208
+	'<'  reduce 208
+	'>'  reduce 208
+	'+'  reduce 208
+	'-'  reduce 208
+	'{'  reduce 208
+	'}'  reduce 208
+	';'  reduce 208
+	')'  reduce 208
+	'('  reduce 208
+
+	array  goto 330
+
+
+state 291
+	lexp : '!' . lexp  (277)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	lexp  goto 331
+	pexp  goto 301
+
+
+state 292
+	lexp : '~' . lexp  (278)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	lexp  goto 332
+	pexp  goto 301
+
+
+state 293
+	pexp : '(' . expr ')'  (285)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	expr  goto 333
+	cexp  goto 334
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 294
+	array : '[' cexp . ']' array  (209)
+
+	']'  shift 335
+	.  error
+
+
+state 295
+	cexp : oexp .  (252)
+	obex : oexp .  (256)
+
+	','  reduce 252
+	'?'  reduce 256
+	':'  reduce 252
+	OR  reduce 256
+	'}'  reduce 252
+	';'  reduce 252
+	']'  reduce 252
+	')'  reduce 252
+
+
+state 296
+	cexp : obex . '?' qexp ':' cexp  (251)
+	oexp : obex . OR aexp  (254)
+
+	'?'  shift 336
+	OR  shift 337
+	.  error
+
+
+state 297
+	oexp : aexp .  (255)
+	abex : aexp .  (259)
+
+	','  reduce 255
+	'?'  reduce 255
+	':'  reduce 255
+	OR  reduce 255
+	AN  reduce 259
+	'}'  reduce 255
+	';'  reduce 255
+	']'  reduce 255
+	')'  reduce 255
+
+
+state 298
+	aexp : abex . AN rexp  (257)
+
+	AN  shift 338
+	.  error
+
+
+state 299
+	aexp : rexp .  (258)
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'|'  shift 339
+	'^'  shift 340
+	'&'  shift 341
+	EQ  shift 342
+	NE  shift 343
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 258
+	'?'  reduce 258
+	':'  reduce 258
+	OR  reduce 258
+	AN  reduce 258
+	'}'  reduce 258
+	';'  reduce 258
+	']'  reduce 258
+	')'  reduce 258
+
+
+state 300
+	rexp : lexp .  (276)
+
+	.  reduce 276
+
+
+state 301
+	lexp : pexp .  (284)
+
+	.  reduce 284
+
+
+state 302
+	tag : TAG .  (218)
+
+	.  reduce 218
+
+
+state 303
+	dclr : ptrs ID arrayck tag . bounds brinit  (34)
+	nullptr : .  (228)
+
+	null  shift 355
+	LNG  reduce 228
+	DBL  reduce 228
+	CHR  reduce 228
+	STR  reduce 228
+	','  reduce 228
+	'='  reduce 228
+	':'  reduce 228
+	EQ  reduce 228
+	'<'  reduce 228
+	'+'  reduce 228
+	'-'  reduce 228
+	'{'  reduce 228
+	'}'  reduce 228
+	';'  reduce 228
+
+	nullptr  goto 356
+	bounds  goto 357
+
+
+state 304
+	fargs : error . ID  (84)
+	fargs : error . ','  (85)
+	type : error . ID error  (141)
+	type : error . ID '>'  (142)
+	type : error . '>'  (143)
+
+	ID  shift 358
+	','  shift 359
+	'>'  shift 73
+	.  error
+
+
+state 305
+	farg : tspec . ptrs arg arrayck occurs init  (86)
+	ptrs : .  (204)
+
+	.  reduce 204
+
+	ptrs  goto 360
+
+
+state 306
+	func : fname '(' s6 fargso . ')' const abstract  (78)
+
+	')'  shift 361
+	.  error
+
+
+state 307
+	fargso : fargs .  (81)
+
+	.  reduce 81
+
+
+state 308
+	fargs : farg .  (82)
+	fargs : farg . ',' fargs  (83)
+
+	','  shift 362
+	')'  reduce 82
+
+
+state 309
+	decls : PRIVATE ':' t3 . decls  (15)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	']'  reduce 13
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 363
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 310
+	decls : PROTECTED ':' t4 . decls  (16)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	']'  reduce 13
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 364
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 311
+	decls : PUBLIC ':' t5 . decls  (17)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	']'  reduce 13
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 365
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 312
+	decls : dclrs ';' decls .  (14)
+
+	.  reduce 14
+
+
+state 313
+	decls : t1 decls t2 . decls  (18)
+	decls : .  (13)
+	spec : .  (93)
+	virtual : .  (202)
+
+	error  shift 170
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	PRIVATE  shift 171
+	PROTECTED  shift 172
+	PUBLIC  shift 173
+	VIRTUAL  shift 30
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 49
+	'['  shift 50
+	'@'  shift 52
+	'$'  shift 53
+	OPERATOR  reduce 93
+	ID  reduce 93
+	','  reduce 93
+	AN  reduce 93
+	'&'  reduce 93
+	'*'  reduce 93
+	'}'  reduce 13
+	';'  reduce 93
+	']'  reduce 13
+	'~'  reduce 202
+
+	type  goto 54
+	store  goto 55
+	virtual  goto 56
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	spec  goto 63
+	dclrs  goto 174
+	t1  goto 175
+	decls  goto 366
+	ctor  goto 69
+	dtor  goto 70
+
+
+state 314
+	type : ENUM '*' '{' s2 dclrs s5 . '}'  (132)
+
+	'}'  shift 367
+	.  error
+
+
+state 315
+	type : ENUM '{' s2 dclrs s5 '}' .  (131)
+
+	.  reduce 131
+
+
+state 316
+	type : UNION id '{' s3 decls '}' .  (129)
+
+	.  reduce 129
+
+
+state 317
+	type : TEMPLATE '<' tname id '>' CLASS . id  (119)
+
+	ID  shift 77
+	TYPE  shift 78
+	.  error
+
+	id  goto 368
+
+
+state 318
+	texp : tspec ptrs ID array .  (92)
+
+	.  reduce 92
+
+
+state 319
+	texpf : tspec ptrs '(' s6 . fargso ')'  (90)
+	fargso : .  (80)
+
+	error  shift 304
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	')'  reduce 80
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 305
+	fargso  goto 369
+	fargs  goto 307
+	farg  goto 308
+
+
+state 320
+	type : class ':' base '{' s2 decls . '}'  (122)
+
+	'}'  shift 370
+	.  error
+
+
+state 321
+	type : enum '{' s2 dclrs s5 '}' .  (133)
+
+	.  reduce 133
+
+
+state 322
+	type : enumsc '{' s2 dclrs s5 '}' .  (134)
+
+	.  reduce 134
+
+
+state 323
+	type : mask '{' s4 dclrs s5 '}' .  (135)
+
+	.  reduce 135
+
+
+state 324
+	type : masksc '{' s4 dclrs s5 '}' .  (136)
+
+	.  reduce 136
+
+
+state 325
+	lexp : SIZEOF '(' . texp ')'  (283)
+
+	error  shift 96
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	.  error
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 244
+	texp  goto 371
+
+
+state 326
+	lexp : '&' lexp .  (282)
+
+	.  reduce 282
+
+
+state 327
+	lexp : '+' lexp .  (280)
+
+	.  reduce 280
+
+
+state 328
+	lexp : '-' lexp .  (279)
+
+	.  reduce 279
+
+
+state 329
+	lexp : '*' lexp .  (281)
+
+	.  reduce 281
+
+
+state 330
+	array : '[' ']' array .  (210)
+
+	.  reduce 210
+
+
+state 331
+	lexp : '!' lexp .  (277)
+
+	.  reduce 277
+
+
+state 332
+	lexp : '~' lexp .  (278)
+
+	.  reduce 278
+
+
+state 333
+	expr : expr . ',' expr  (249)
+	pexp : '(' expr . ')'  (285)
+
+	','  shift 372
+	')'  shift 373
+	.  error
+
+
+state 334
+	expr : cexp .  (250)
+
+	.  reduce 250
+
+
+state 335
+	array : '[' cexp ']' . array  (209)
+	array : .  (208)
+
+	'['  shift 246
+	null  reduce 208
+	LNG  reduce 208
+	DBL  reduce 208
+	CHR  reduce 208
+	TAG  reduce 208
+	STR  reduce 208
+	','  reduce 208
+	'='  reduce 208
+	':'  reduce 208
+	EQ  reduce 208
+	'<'  reduce 208
+	'>'  reduce 208
+	'+'  reduce 208
+	'-'  reduce 208
+	'{'  reduce 208
+	'}'  reduce 208
+	';'  reduce 208
+	')'  reduce 208
+	'('  reduce 208
+
+	array  goto 374
+
+
+state 336
+	cexp : obex '?' . qexp ':' cexp  (251)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	expr  goto 375
+	cexp  goto 334
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+	qexp  goto 376
+
+
+state 337
+	oexp : obex OR . aexp  (254)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	aexp  goto 377
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 338
+	aexp : abex AN . rexp  (257)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 378
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 339
+	rexp : rexp '|' . rexp  (260)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 379
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 340
+	rexp : rexp '^' . rexp  (261)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 380
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 341
+	rexp : rexp '&' . rexp  (262)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 381
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 342
+	rexp : rexp EQ . rexp  (263)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 382
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 343
+	rexp : rexp NE . rexp  (264)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 383
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 344
+	rexp : rexp '<' . rexp  (265)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 384
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 345
+	rexp : rexp LE . rexp  (266)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 385
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 346
+	rexp : rexp '>' . rexp  (267)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 386
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 347
+	rexp : rexp GE . rexp  (268)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 387
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 348
+	rexp : rexp LS . rexp  (269)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 388
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 349
+	rexp : rexp RS . rexp  (270)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 389
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 350
+	rexp : rexp '+' . rexp  (271)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 390
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 351
+	rexp : rexp '-' . rexp  (272)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 391
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 352
+	rexp : rexp '*' . rexp  (273)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 392
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 353
+	rexp : rexp '/' . rexp  (274)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 393
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 354
+	rexp : rexp '%' . rexp  (275)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	rexp  goto 394
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 355
+	nullptr : null .  (229)
+
+	.  reduce 229
+
+
+state 356
+	bounds : nullptr . patt  (224)
+	bounds : nullptr . patt cdbl min  (225)
+	bounds : nullptr . patt cdbl minmax cdbl  (226)
+	bounds : nullptr . patt max cdbl  (227)
+	patt : .  (230)
+
+	STR  shift 395
+	LNG  reduce 230
+	DBL  reduce 230
+	CHR  reduce 230
+	','  reduce 230
+	'='  reduce 230
+	':'  reduce 230
+	EQ  reduce 230
+	'<'  reduce 230
+	'+'  reduce 230
+	'-'  reduce 230
+	'{'  reduce 230
+	'}'  reduce 230
+	';'  reduce 230
+
+	patt  goto 396
+
+
+state 357
+	dclr : ptrs ID arrayck tag bounds . brinit  (34)
+	init : .  (214)
+
+	'='  shift 397
+	EQ  shift 398
+	'{'  shift 399
+	','  reduce 214
+	'}'  reduce 214
+	';'  reduce 214
+
+	brinit  goto 400
+	init  goto 401
+
+
+state 358
+	fargs : error ID .  (84)
+	type : error ID . error  (141)
+	type : error ID . '>'  (142)
+
+	error  shift 118
+	'>'  shift 119
+	')'  reduce 84
+
+
+state 359
+	fargs : error ',' .  (85)
+
+	.  reduce 85
+
+
+state 360
+	farg : tspec ptrs . arg arrayck occurs init  (86)
+	ptrs : ptrs . '*'  (205)
+	ptrs : ptrs . '&'  (206)
+	ptrs : ptrs . AN  (207)
+	arg : .  (87)
+
+	ID  shift 402
+	AN  shift 161
+	'&'  shift 162
+	'*'  shift 163
+	LNG  reduce 87
+	','  reduce 87
+	'='  reduce 87
+	':'  reduce 87
+	EQ  reduce 87
+	'['  reduce 87
+	')'  reduce 87
+
+	arg  goto 403
+
+
+state 361
+	func : fname '(' s6 fargso ')' . const abstract  (78)
+	const : .  (196)
+
+	.  reduce 196
+
+	const  goto 404
+
+
+state 362
+	fargs : farg ',' . fargs  (83)
+
+	error  shift 304
+	AUTO  shift 9
+	DOUBLE  shift 10
+	INT  shift 11
+	STRUCT  shift 12
+	LONG  shift 13
+	ENUM  shift 14
+	REGISTER  shift 15
+	TYPEDEF  shift 16
+	CHAR  shift 17
+	EXTERN  shift 18
+	RETURN  shift 19
+	UNION  shift 20
+	CONST  shift 21
+	FLOAT  shift 22
+	SHORT  shift 23
+	UNSIGNED  shift 24
+	SIGNED  shift 25
+	VOID  shift 26
+	VOLATILE  shift 27
+	STATIC  shift 28
+	CLASS  shift 29
+	VIRTUAL  shift 97
+	INLINE  shift 31
+	LLONG  shift 32
+	BOOL  shift 33
+	WCHAR  shift 34
+	TIME  shift 35
+	ULLONG  shift 36
+	MUSTUNDERSTAND  shift 37
+	SIZE  shift 38
+	FRIEND  shift 39
+	TEMPLATE  shift 40
+	EXPLICIT  shift 41
+	MUTABLE  shift 42
+	FINAL  shift 43
+	OVERRIDE  shift 44
+	UCHAR  shift 45
+	USHORT  shift 46
+	UINT  shift 47
+	ULONG  shift 48
+	TYPE  shift 98
+	'@'  shift 52
+	'$'  shift 53
+	.  error
+
+	type  goto 140
+	store  goto 141
+	struct  goto 57
+	class  goto 58
+	enum  goto 59
+	enumsc  goto 60
+	mask  goto 61
+	masksc  goto 62
+	tspec  goto 305
+	fargs  goto 405
+	farg  goto 308
+
+
+state 363
+	decls : PRIVATE ':' t3 decls .  (15)
+
+	.  reduce 15
+
+
+state 364
+	decls : PROTECTED ':' t4 decls .  (16)
+
+	.  reduce 16
+
+
+state 365
+	decls : PUBLIC ':' t5 decls .  (17)
+
+	.  reduce 17
+
+
+state 366
+	decls : t1 decls t2 decls .  (18)
+
+	.  reduce 18
+
+
+state 367
+	type : ENUM '*' '{' s2 dclrs s5 '}' .  (132)
+
+	.  reduce 132
+
+
+state 368
+	type : TEMPLATE '<' tname id '>' CLASS id .  (119)
+
+	.  reduce 119
+
+
+state 369
+	texpf : tspec ptrs '(' s6 fargso . ')'  (90)
+
+	')'  shift 406
+	.  error
+
+
+state 370
+	type : class ':' base '{' s2 decls '}' .  (122)
+
+	.  reduce 122
+
+
+state 371
+	lexp : SIZEOF '(' texp . ')'  (283)
+
+	')'  shift 407
+	.  error
+
+
+state 372
+	expr : expr ',' . expr  (249)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	expr  goto 408
+	cexp  goto 334
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 373
+	pexp : '(' expr ')' .  (285)
+
+	.  reduce 285
+
+
+state 374
+	array : '[' cexp ']' array .  (209)
+
+	.  reduce 209
+
+
+state 375
+	expr : expr . ',' expr  (249)
+	qexp : expr .  (253)
+
+	','  shift 372
+	':'  reduce 253
+
+
+state 376
+	cexp : obex '?' qexp . ':' cexp  (251)
+
+	':'  shift 409
+	.  error
+
+
+state 377
+	oexp : obex OR aexp .  (254)
+	abex : aexp .  (259)
+
+	','  reduce 254
+	'?'  reduce 254
+	':'  reduce 254
+	OR  reduce 254
+	AN  reduce 259
+	'}'  reduce 254
+	';'  reduce 254
+	']'  reduce 254
+	')'  reduce 254
+
+
+state 378
+	aexp : abex AN rexp .  (257)
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'|'  shift 339
+	'^'  shift 340
+	'&'  shift 341
+	EQ  shift 342
+	NE  shift 343
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 257
+	'?'  reduce 257
+	':'  reduce 257
+	OR  reduce 257
+	AN  reduce 257
+	'}'  reduce 257
+	';'  reduce 257
+	']'  reduce 257
+	')'  reduce 257
+
+
+state 379
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp '|' rexp .  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'^'  shift 340
+	'&'  shift 341
+	EQ  shift 342
+	NE  shift 343
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 260
+	'?'  reduce 260
+	':'  reduce 260
+	OR  reduce 260
+	AN  reduce 260
+	'|'  reduce 260
+	'}'  reduce 260
+	';'  reduce 260
+	']'  reduce 260
+	')'  reduce 260
+
+
+state 380
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp '^' rexp .  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'&'  shift 341
+	EQ  shift 342
+	NE  shift 343
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 261
+	'?'  reduce 261
+	':'  reduce 261
+	OR  reduce 261
+	AN  reduce 261
+	'|'  reduce 261
+	'^'  reduce 261
+	'}'  reduce 261
+	';'  reduce 261
+	']'  reduce 261
+	')'  reduce 261
+
+
+state 381
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp '&' rexp .  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	EQ  shift 342
+	NE  shift 343
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 262
+	'?'  reduce 262
+	':'  reduce 262
+	OR  reduce 262
+	AN  reduce 262
+	'|'  reduce 262
+	'^'  reduce 262
+	'&'  reduce 262
+	'}'  reduce 262
+	';'  reduce 262
+	']'  reduce 262
+	')'  reduce 262
+
+
+state 382
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp EQ rexp .  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 263
+	'?'  reduce 263
+	':'  reduce 263
+	OR  reduce 263
+	AN  reduce 263
+	'|'  reduce 263
+	'^'  reduce 263
+	'&'  reduce 263
+	EQ  reduce 263
+	NE  reduce 263
+	'}'  reduce 263
+	';'  reduce 263
+	']'  reduce 263
+	')'  reduce 263
+
+
+state 383
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp NE rexp .  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'<'  shift 344
+	LE  shift 345
+	'>'  shift 346
+	GE  shift 347
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 264
+	'?'  reduce 264
+	':'  reduce 264
+	OR  reduce 264
+	AN  reduce 264
+	'|'  reduce 264
+	'^'  reduce 264
+	'&'  reduce 264
+	EQ  reduce 264
+	NE  reduce 264
+	'}'  reduce 264
+	';'  reduce 264
+	']'  reduce 264
+	')'  reduce 264
+
+
+state 384
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp '<' rexp .  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 265
+	'?'  reduce 265
+	':'  reduce 265
+	OR  reduce 265
+	AN  reduce 265
+	'|'  reduce 265
+	'^'  reduce 265
+	'&'  reduce 265
+	EQ  reduce 265
+	NE  reduce 265
+	'<'  reduce 265
+	LE  reduce 265
+	'>'  reduce 265
+	GE  reduce 265
+	'}'  reduce 265
+	';'  reduce 265
+	']'  reduce 265
+	')'  reduce 265
+
+
+state 385
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp LE rexp .  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 266
+	'?'  reduce 266
+	':'  reduce 266
+	OR  reduce 266
+	AN  reduce 266
+	'|'  reduce 266
+	'^'  reduce 266
+	'&'  reduce 266
+	EQ  reduce 266
+	NE  reduce 266
+	'<'  reduce 266
+	LE  reduce 266
+	'>'  reduce 266
+	GE  reduce 266
+	'}'  reduce 266
+	';'  reduce 266
+	']'  reduce 266
+	')'  reduce 266
+
+
+state 386
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp '>' rexp .  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 267
+	'?'  reduce 267
+	':'  reduce 267
+	OR  reduce 267
+	AN  reduce 267
+	'|'  reduce 267
+	'^'  reduce 267
+	'&'  reduce 267
+	EQ  reduce 267
+	NE  reduce 267
+	'<'  reduce 267
+	LE  reduce 267
+	'>'  reduce 267
+	GE  reduce 267
+	'}'  reduce 267
+	';'  reduce 267
+	']'  reduce 267
+	')'  reduce 267
+
+
+state 387
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp GE rexp .  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	LS  shift 348
+	RS  shift 349
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 268
+	'?'  reduce 268
+	':'  reduce 268
+	OR  reduce 268
+	AN  reduce 268
+	'|'  reduce 268
+	'^'  reduce 268
+	'&'  reduce 268
+	EQ  reduce 268
+	NE  reduce 268
+	'<'  reduce 268
+	LE  reduce 268
+	'>'  reduce 268
+	GE  reduce 268
+	'}'  reduce 268
+	';'  reduce 268
+	']'  reduce 268
+	')'  reduce 268
+
+
+state 388
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp LS rexp .  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 269
+	'?'  reduce 269
+	':'  reduce 269
+	OR  reduce 269
+	AN  reduce 269
+	'|'  reduce 269
+	'^'  reduce 269
+	'&'  reduce 269
+	EQ  reduce 269
+	NE  reduce 269
+	'<'  reduce 269
+	LE  reduce 269
+	'>'  reduce 269
+	GE  reduce 269
+	LS  reduce 269
+	RS  reduce 269
+	'}'  reduce 269
+	';'  reduce 269
+	']'  reduce 269
+	')'  reduce 269
+
+
+state 389
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp RS rexp .  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'+'  shift 350
+	'-'  shift 351
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 270
+	'?'  reduce 270
+	':'  reduce 270
+	OR  reduce 270
+	AN  reduce 270
+	'|'  reduce 270
+	'^'  reduce 270
+	'&'  reduce 270
+	EQ  reduce 270
+	NE  reduce 270
+	'<'  reduce 270
+	LE  reduce 270
+	'>'  reduce 270
+	GE  reduce 270
+	LS  reduce 270
+	RS  reduce 270
+	'}'  reduce 270
+	';'  reduce 270
+	']'  reduce 270
+	')'  reduce 270
+
+
+state 390
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp '+' rexp .  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 271
+	'?'  reduce 271
+	':'  reduce 271
+	OR  reduce 271
+	AN  reduce 271
+	'|'  reduce 271
+	'^'  reduce 271
+	'&'  reduce 271
+	EQ  reduce 271
+	NE  reduce 271
+	'<'  reduce 271
+	LE  reduce 271
+	'>'  reduce 271
+	GE  reduce 271
+	LS  reduce 271
+	RS  reduce 271
+	'+'  reduce 271
+	'-'  reduce 271
+	'}'  reduce 271
+	';'  reduce 271
+	']'  reduce 271
+	')'  reduce 271
+
+
+state 391
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp '-' rexp .  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	'*'  shift 352
+	'/'  shift 353
+	'%'  shift 354
+	','  reduce 272
+	'?'  reduce 272
+	':'  reduce 272
+	OR  reduce 272
+	AN  reduce 272
+	'|'  reduce 272
+	'^'  reduce 272
+	'&'  reduce 272
+	EQ  reduce 272
+	NE  reduce 272
+	'<'  reduce 272
+	LE  reduce 272
+	'>'  reduce 272
+	GE  reduce 272
+	LS  reduce 272
+	RS  reduce 272
+	'+'  reduce 272
+	'-'  reduce 272
+	'}'  reduce 272
+	';'  reduce 272
+	']'  reduce 272
+	')'  reduce 272
+
+
+state 392
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp '*' rexp .  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	.  reduce 273
+
+
+state 393
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp '/' rexp .  (274)
+	rexp : rexp . '%' rexp  (275)
+
+	.  reduce 274
+
+
+state 394
+	rexp : rexp . '|' rexp  (260)
+	rexp : rexp . '^' rexp  (261)
+	rexp : rexp . '&' rexp  (262)
+	rexp : rexp . EQ rexp  (263)
+	rexp : rexp . NE rexp  (264)
+	rexp : rexp . '<' rexp  (265)
+	rexp : rexp . LE rexp  (266)
+	rexp : rexp . '>' rexp  (267)
+	rexp : rexp . GE rexp  (268)
+	rexp : rexp . LS rexp  (269)
+	rexp : rexp . RS rexp  (270)
+	rexp : rexp . '+' rexp  (271)
+	rexp : rexp . '-' rexp  (272)
+	rexp : rexp . '*' rexp  (273)
+	rexp : rexp . '/' rexp  (274)
+	rexp : rexp . '%' rexp  (275)
+	rexp : rexp '%' rexp .  (275)
+
+	.  reduce 275
+
+
+state 395
+	patt : STR .  (231)
+
+	.  reduce 231
+
+
+state 396
+	bounds : nullptr patt .  (224)
+	bounds : nullptr patt . cdbl min  (225)
+	bounds : nullptr patt . cdbl minmax cdbl  (226)
+	bounds : nullptr patt . max cdbl  (227)
+
+	LNG  shift 410
+	DBL  shift 411
+	CHR  shift 412
+	':'  shift 413
+	'<'  shift 414
+	'+'  shift 415
+	'-'  shift 416
+	','  reduce 224
+	'='  reduce 224
+	EQ  reduce 224
+	'{'  reduce 224
+	'}'  reduce 224
+	';'  reduce 224
+
+	cdbl  goto 417
+	max  goto 418
+
+
+state 397
+	init : '=' . cexp  (215)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	cexp  goto 419
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 398
+	init : EQ . cexp  (216)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	cexp  goto 420
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 399
+	brinit : '{' . cexp '}'  (213)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	cexp  goto 421
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 400
+	dclr : ptrs ID arrayck tag bounds brinit .  (34)
+
+	.  reduce 34
+
+
+state 401
+	brinit : init .  (212)
+
+	.  reduce 212
+
+
+state 402
+	arg : ID .  (88)
+
+	.  reduce 88
+
+
+state 403
+	farg : tspec ptrs arg . arrayck occurs init  (86)
+	array : .  (208)
+
+	'['  shift 246
+	LNG  reduce 208
+	','  reduce 208
+	'='  reduce 208
+	':'  reduce 208
+	EQ  reduce 208
+	')'  reduce 208
+
+	array  goto 247
+	arrayck  goto 422
+
+
+state 404
+	func : fname '(' s6 fargso ')' const . abstract  (78)
+	const : const . CONST  (197)
+	const : const . FINAL  (198)
+	const : const . OVERRIDE  (199)
+	abstract : .  (200)
+
+	CONST  shift 423
+	FINAL  shift 424
+	OVERRIDE  shift 425
+	'='  shift 426
+	','  reduce 200
+	'}'  reduce 200
+	';'  reduce 200
+
+	abstract  goto 427
+
+
+state 405
+	fargs : farg ',' fargs .  (83)
+
+	.  reduce 83
+
+
+state 406
+	texpf : tspec ptrs '(' s6 fargso ')' .  (90)
+
+	.  reduce 90
+
+
+state 407
+	lexp : SIZEOF '(' texp ')' .  (283)
+
+	.  reduce 283
+
+
+state 408
+	expr : expr . ',' expr  (249)
+	expr : expr ',' expr .  (249)
+
+	.  reduce 249
+
+
+state 409
+	cexp : obex '?' qexp ':' . cexp  (251)
+
+	SIZEOF  shift 278
+	CFALSE  shift 279
+	CTRUE  shift 280
+	ID  shift 281
+	LNG  shift 282
+	DBL  shift 283
+	CHR  shift 284
+	STR  shift 285
+	'&'  shift 286
+	'+'  shift 287
+	'-'  shift 288
+	'*'  shift 289
+	'!'  shift 291
+	'~'  shift 292
+	'('  shift 293
+	.  error
+
+	cexp  goto 428
+	oexp  goto 295
+	obex  goto 296
+	aexp  goto 297
+	abex  goto 298
+	rexp  goto 299
+	lexp  goto 300
+	pexp  goto 301
+
+
+state 410
+	cdbl : LNG .  (233)
+
+	.  reduce 233
+
+
+state 411
+	cdbl : DBL .  (232)
+
+	.  reduce 232
+
+
+state 412
+	cdbl : CHR .  (234)
+
+	.  reduce 234
+
+
+state 413
+	max : ':' .  (246)
+	max : ':' . '<'  (247)
+
+	'<'  shift 429
+	LNG  reduce 246
+	DBL  reduce 246
+	CHR  reduce 246
+	'+'  reduce 246
+	'-'  reduce 246
+
+
+state 414
+	max : '<' .  (248)
+
+	.  reduce 248
+
+
+state 415
+	cdbl : '+' . cdbl  (235)
+
+	LNG  shift 410
+	DBL  shift 411
+	CHR  shift 412
+	'+'  shift 415
+	'-'  shift 416
+	.  error
+
+	cdbl  goto 430
+
+
+state 416
+	cdbl : '-' . cdbl  (236)
+
+	LNG  shift 410
+	DBL  shift 411
+	CHR  shift 412
+	'+'  shift 415
+	'-'  shift 416
+	.  error
+
+	cdbl  goto 431
+
+
+state 417
+	bounds : nullptr patt cdbl . min  (225)
+	bounds : nullptr patt cdbl . minmax cdbl  (226)
+	min : .  (237)
+
+	':'  shift 432
+	'<'  shift 433
+	','  reduce 237
+	'='  reduce 237
+	EQ  reduce 237
+	'{'  reduce 237
+	'}'  reduce 237
+	';'  reduce 237
+
+	min  goto 434
+	minmax  goto 435
+
+
+state 418
+	bounds : nullptr patt max . cdbl  (227)
+
+	LNG  shift 410
+	DBL  shift 411
+	CHR  shift 412
+	'+'  shift 415
+	'-'  shift 416
+	.  error
+
+	cdbl  goto 436
+
+
+state 419
+	init : '=' cexp .  (215)
+
+	.  reduce 215
+
+
+state 420
+	init : EQ cexp .  (216)
+
+	.  reduce 216
+
+
+state 421
+	brinit : '{' cexp . '}'  (213)
+
+	'}'  shift 437
+	.  error
+
+
+state 422
+	farg : tspec ptrs arg arrayck . occurs init  (86)
+	occurs : .  (219)
+
+	LNG  shift 438
+	':'  shift 439
+	','  reduce 219
+	'='  reduce 219
+	EQ  reduce 219
+	')'  reduce 219
+
+	occurs  goto 440
+
+
+state 423
+	const : const CONST .  (197)
+
+	.  reduce 197
+
+
+state 424
+	const : const FINAL .  (198)
+
+	.  reduce 198
+
+
+state 425
+	const : const OVERRIDE .  (199)
+
+	.  reduce 199
+
+
+state 426
+	abstract : '=' . LNG  (201)
+
+	LNG  shift 441
+	.  error
+
+
+state 427
+	func : fname '(' s6 fargso ')' const abstract .  (78)
+
+	.  reduce 78
+
+
+state 428
+	cexp : obex '?' qexp ':' cexp .  (251)
+
+	.  reduce 251
+
+
+state 429
+	max : ':' '<' .  (247)
+
+	.  reduce 247
+
+
+state 430
+	cdbl : '+' cdbl .  (235)
+
+	.  reduce 235
+
+
+state 431
+	cdbl : '-' cdbl .  (236)
+
+	.  reduce 236
+
+
+state 432
+	min : ':' .  (238)
+	minmax : ':' .  (241)
+	minmax : ':' . '<'  (243)
+
+	'<'  shift 442
+	LNG  reduce 241
+	DBL  reduce 241
+	CHR  reduce 241
+	','  reduce 238
+	'='  reduce 238
+	EQ  reduce 238
+	'+'  reduce 241
+	'-'  reduce 241
+	'{'  reduce 238
+	'}'  reduce 238
+	';'  reduce 238
+
+
+state 433
+	min : '<' . ':'  (239)
+	min : '<' .  (240)
+	minmax : '<' . ':'  (242)
+	minmax : '<' . ':' '<'  (244)
+	minmax : '<' .  (245)
+
+	':'  shift 443
+	LNG  reduce 245
+	DBL  reduce 245
+	CHR  reduce 245
+	','  reduce 240
+	'='  reduce 240
+	EQ  reduce 240
+	'+'  reduce 245
+	'-'  reduce 245
+	'{'  reduce 240
+	'}'  reduce 240
+	';'  reduce 240
+
+
+state 434
+	bounds : nullptr patt cdbl min .  (225)
+
+	.  reduce 225
+
+
+state 435
+	bounds : nullptr patt cdbl minmax . cdbl  (226)
+
+	LNG  shift 410
+	DBL  shift 411
+	CHR  shift 412
+	'+'  shift 415
+	'-'  shift 416
+	.  error
+
+	cdbl  goto 444
+
+
+state 436
+	bounds : nullptr patt max cdbl .  (227)
+
+	.  reduce 227
+
+
+state 437
+	brinit : '{' cexp '}' .  (213)
+
+	.  reduce 213
+
+
+state 438
+	occurs : LNG .  (220)
+	occurs : LNG . ':'  (221)
+	occurs : LNG . ':' LNG  (222)
+
+	':'  shift 445
+	','  reduce 220
+	'='  reduce 220
+	EQ  reduce 220
+	')'  reduce 220
+
+
+state 439
+	occurs : ':' . LNG  (223)
+
+	LNG  shift 446
+	.  error
+
+
+state 440
+	farg : tspec ptrs arg arrayck occurs . init  (86)
+	init : .  (214)
+
+	'='  shift 397
+	EQ  shift 398
+	','  reduce 214
+	')'  reduce 214
+
+	init  goto 447
+
+
+state 441
+	abstract : '=' LNG .  (201)
+
+	.  reduce 201
+
+
+state 442
+	minmax : ':' '<' .  (243)
+
+	.  reduce 243
+
+
+state 443
+	min : '<' ':' .  (239)
+	minmax : '<' ':' .  (242)
+	minmax : '<' ':' . '<'  (244)
+
+	'<'  shift 448
+	LNG  reduce 242
+	DBL  reduce 242
+	CHR  reduce 242
+	','  reduce 239
+	'='  reduce 239
+	EQ  reduce 239
+	'+'  reduce 242
+	'-'  reduce 242
+	'{'  reduce 239
+	'}'  reduce 239
+	';'  reduce 239
+
+
+state 444
+	bounds : nullptr patt cdbl minmax cdbl .  (226)
+
+	.  reduce 226
+
+
+state 445
+	occurs : LNG ':' .  (221)
+	occurs : LNG ':' . LNG  (222)
+
+	LNG  shift 449
+	','  reduce 221
+	'='  reduce 221
+	EQ  reduce 221
+	')'  reduce 221
+
+
+state 446
+	occurs : ':' LNG .  (223)
+
+	.  reduce 223
+
+
+state 447
+	farg : tspec ptrs arg arrayck occurs init .  (86)
+
+	.  reduce 86
+
+
+state 448
+	minmax : '<' ':' '<' .  (244)
+
+	.  reduce 244
+
+
+state 449
+	occurs : LNG ':' LNG .  (222)
+
+	.  reduce 222
+
+
+State 58 contains 1 shift/reduce conflict.
+State 86 contains 1 shift/reduce conflict.
+State 87 contains 1 shift/reduce conflict.
+
+
+121 terminals, 74 nonterminals
+293 grammar rules, 450 states
